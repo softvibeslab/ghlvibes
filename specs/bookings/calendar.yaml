@@ -1,0 +1,252 @@
+# GoHighLevel Clone - Bookings Calendar SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: bookings
+domain: calendar
+version: "1.0.0"
+skills_required:
+  - moai-workflow-tdd
+  - moai-lib-fastapi
+  - moai-platform-supabase
+  - moai-context7-integration
+
+specs:
+  - id: SPEC-BOK-001
+    title: Create Calendar
+    priority: critical
+    ears:
+      event: When a user creates a new booking calendar
+      action: the system shall configure calendar settings, availability, and meeting types
+      result: new calendar ready for bookings
+      state: created
+    config:
+      - name
+      - description
+      - timezone
+      - availability_hours
+      - meeting_types
+      - buffer_time
+      - booking_window
+    tests:
+      - test_create_calendar
+      - test_timezone_config
+      - test_availability_setup
+
+  - id: SPEC-BOK-002
+    title: Configure Availability
+    priority: critical
+    ears:
+      event: When setting availability for a calendar
+      action: the system shall apply weekly schedule, date overrides, and blackout dates
+      result: configured availability with rules
+      state: configured
+    availability_config:
+      weekly_hours:
+        monday: ["09:00-17:00"]
+        tuesday: ["09:00-17:00"]
+        # etc
+      date_overrides: []
+      blackout_dates: []
+      buffer_before: 15
+      buffer_after: 15
+      min_notice_hours: 24
+      max_future_days: 60
+    tests:
+      - test_weekly_schedule
+      - test_date_override
+      - test_blackout_dates
+      - test_buffer_times
+
+  - id: SPEC-BOK-003
+    title: Create Meeting Type
+    priority: high
+    ears:
+      event: When creating a new meeting type
+      action: the system shall configure duration, location, and intake questions
+      result: meeting type available for booking
+      state: active
+    meeting_config:
+      - name
+      - duration_minutes: [15, 30, 45, 60, 90, 120]
+      - location_type: [in_person, phone, video, custom]
+      - video_provider: [zoom, google_meet, teams]
+      - intake_questions: []
+      - confirmation_message
+      - reminder_settings
+    tests:
+      - test_meeting_type_creation
+      - test_duration_options
+      - test_video_integration
+
+  - id: SPEC-BOK-004
+    title: Check Availability
+    priority: critical
+    ears:
+      event: When a visitor requests available time slots
+      action: the system shall query calendar, check conflicts, and return available slots
+      result: list of bookable time slots
+      state: queried
+    checks:
+      - calendar_availability
+      - existing_bookings
+      - buffer_times
+      - external_calendar_sync
+      - team_member_availability
+    tests:
+      - test_availability_query
+      - test_conflict_detection
+      - test_external_calendar_check
+
+  - id: SPEC-BOK-005
+    title: Book Appointment
+    priority: critical
+    ears:
+      event: When a visitor selects a time slot and submits booking
+      action: the system shall validate slot, create booking, and send confirmations
+      result: confirmed appointment with notifications sent
+      state: booked
+    booking_flow:
+      - validate_slot_available
+      - create_booking_record
+      - create_crm_contact_if_new
+      - send_confirmation_email
+      - send_confirmation_sms
+      - add_to_calendar
+      - trigger_workflows
+    tests:
+      - test_booking_creation
+      - test_double_booking_prevention
+      - test_confirmation_sent
+      - test_calendar_event_created
+
+  - id: SPEC-BOK-006
+    title: Sync External Calendars
+    priority: high
+    ears:
+      event: When connecting external calendar (Google, Outlook)
+      action: the system shall authenticate OAuth, sync events, and check availability
+      result: bidirectional calendar sync active
+      state: synced
+    integrations:
+      - google_calendar
+      - outlook_calendar
+      - apple_calendar
+    sync_config:
+      direction: bidirectional
+      conflict_handling: block_slot
+      sync_frequency: real_time
+    tests:
+      - test_google_calendar_oauth
+      - test_event_sync
+      - test_availability_from_external
+
+  - id: SPEC-BOK-007
+    title: Generate Video Meeting Link
+    priority: high
+    ears:
+      event: When booking includes video meeting
+      action: the system shall generate meeting link via integration
+      result: meeting link included in confirmation
+      state: linked
+    providers:
+      zoom:
+        create_meeting_api: true
+        waiting_room: optional
+      google_meet:
+        create_event_with_meet: true
+      teams:
+        create_meeting_api: true
+    tests:
+      - test_zoom_link_generation
+      - test_google_meet_link
+      - test_teams_link
+
+  - id: SPEC-BOK-008
+    title: Send Reminders
+    priority: high
+    ears:
+      event: When reminder time is reached before appointment
+      action: the system shall send configured reminders via email and SMS
+      result: reminder notifications delivered
+      state: reminded
+    reminder_config:
+      - 24_hours_before
+      - 1_hour_before
+      - 15_minutes_before
+    channels:
+      - email
+      - sms
+    tests:
+      - test_reminder_scheduling
+      - test_reminder_delivery
+      - test_multiple_reminders
+
+  - id: SPEC-BOK-009
+    title: Reschedule Appointment
+    priority: high
+    ears:
+      event: When a booking needs to be rescheduled
+      action: the system shall release old slot, book new slot, and notify parties
+      result: rescheduled appointment with updated notifications
+      state: rescheduled
+    reschedule_config:
+      allow_client_reschedule: true
+      min_notice_hours: 24
+      max_reschedules: 2
+    tests:
+      - test_client_reschedule
+      - test_admin_reschedule
+      - test_notification_update
+
+  - id: SPEC-BOK-010
+    title: Cancel Appointment
+    priority: high
+    ears:
+      event: When an appointment is cancelled
+      action: the system shall release slot, notify parties, and log cancellation
+      result: cancelled booking with slot freed
+      state: cancelled
+    cancellation_config:
+      allow_client_cancel: true
+      min_notice_hours: 24
+      cancellation_reason: optional
+      refund_policy: configurable
+    tests:
+      - test_cancellation
+      - test_slot_release
+      - test_cancellation_notification
+
+  - id: SPEC-BOK-011
+    title: Handle No-Shows
+    priority: medium
+    ears:
+      event: When an appointment is marked as no-show
+      action: the system shall flag contact, trigger follow-up workflow, and log incident
+      result: no-show recorded with recovery sequence initiated
+      state: no_show
+    follow_up:
+      - automated_message
+      - reschedule_offer
+      - tag_contact
+    tests:
+      - test_noshow_marking
+      - test_followup_trigger
+
+  - id: SPEC-BOK-012
+    title: Team Calendar / Round Robin
+    priority: high
+    ears:
+      event: When configuring team booking with multiple members
+      action: the system shall set round robin rules and availability pooling
+      result: team calendar distributing bookings fairly
+      state: team_configured
+    distribution:
+      - round_robin
+      - availability_based
+      - weighted
+      - priority_based
+    tests:
+      - test_round_robin_assignment
+      - test_availability_pooling
+      - test_weighted_distribution

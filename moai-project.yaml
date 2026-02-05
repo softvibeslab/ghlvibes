@@ -1,0 +1,217 @@
+# GoHighLevel Clone - Moai-ADK Project Configuration
+# Generated for Moai-ADK SPEC-First Development
+
+project:
+  name: gohighlevel-clone
+  version: "1.0.0"
+  description: Full-featured marketing automation platform clone
+  locale: es
+
+architecture:
+  approach: monorepo
+  pattern: clean_architecture
+
+stack:
+  backend:
+    framework: fastapi
+    language: python
+    version: "3.12"
+    skills:
+      - moai-lib-fastapi
+      - moai-domain-backend
+      - moai-security-api
+
+  frontend:
+    framework: nextjs
+    version: "14"
+    ui_library: shadcn
+    skills:
+      - moai-lib-nextjs
+      - moai-lib-react
+      - moai-domain-frontend
+
+  database:
+    primary: postgresql
+    provider: supabase
+    cache: redis
+    search: elasticsearch
+    skills:
+      - moai-platform-supabase
+      - moai-domain-database
+
+  auth:
+    provider: clerk
+    features:
+      - email_password
+      - oauth
+      - magic_link
+      - mfa
+    skills:
+      - moai-platform-clerk
+      - moai-security-auth
+
+  storage:
+    provider: supabase_storage
+    cdn: cloudflare
+    video: cloudflare_stream
+
+  ai:
+    providers:
+      - openai
+      - anthropic
+    skills:
+      - moai-domain-ml
+      - moai-context7-integration
+
+  messaging:
+    sms: twilio
+    email: sendgrid
+    push: firebase
+
+  payments:
+    provider: stripe
+    features:
+      - checkout
+      - subscriptions
+      - connect
+
+  deployment:
+    cloud: aws
+    container: docker
+    orchestration: kubernetes
+    ci_cd: github_actions
+    skills:
+      - moai-devops-docker
+      - moai-cloud-aws
+
+modules:
+  - name: crm
+    path: specs/crm/
+    specs:
+      - contacts.yaml
+      - pipelines.yaml
+    priority: critical
+    dependencies: []
+
+  - name: marketing
+    path: specs/marketing/
+    specs:
+      - campaigns.yaml
+      - ai-conversations.yaml
+    priority: critical
+    dependencies: [crm]
+
+  - name: funnels
+    path: specs/funnels/
+    specs:
+      - builder.yaml
+      - analytics.yaml
+    priority: high
+    dependencies: [crm]
+
+  - name: bookings
+    path: specs/bookings/
+    specs:
+      - calendar.yaml
+    priority: high
+    dependencies: [crm]
+
+  - name: memberships
+    path: specs/memberships/
+    specs:
+      - courses.yaml
+    priority: medium
+    dependencies: [crm]
+
+  - name: workflows
+    path: specs/workflows/
+    specs:
+      - automation.yaml
+    priority: critical
+    dependencies: [crm, marketing]
+
+  - name: whitelabel
+    path: specs/whitelabel/
+    specs:
+      - branding.yaml
+      - security.yaml
+    priority: high
+    dependencies: []
+
+  - name: integrations
+    path: specs/integrations/
+    specs:
+      - external-apis.yaml
+    priority: high
+    dependencies: []
+
+trust_requirements:
+  testable:
+    coverage_minimum: 80
+    unit_tests: required
+    integration_tests: required
+    e2e_tests: required
+
+  readable:
+    documentation: required
+    code_comments: minimal
+    naming_convention: snake_case
+
+  unified:
+    single_source_of_truth: true
+    centralized_config: true
+    shared_types: true
+
+  secured:
+    owasp_compliance: true
+    encryption_at_rest: true
+    encryption_in_transit: true
+    audit_logging: true
+
+  trackable:
+    version_control: git
+    semantic_versioning: true
+    changelog: required
+
+spec_summary:
+  total_modules: 8
+  total_spec_files: 11
+  total_specs: 100+
+  format: EARS
+
+development_phases:
+  phase_1:
+    name: Core Infrastructure
+    modules: [whitelabel/security, integrations]
+    description: Authentication, security, and external API foundations
+
+  phase_2:
+    name: CRM Foundation
+    modules: [crm]
+    description: Contact management, pipelines, and data layer
+
+  phase_3:
+    name: Communication Engine
+    modules: [marketing, workflows]
+    description: Multi-channel messaging and automation
+
+  phase_4:
+    name: Conversion Tools
+    modules: [funnels, bookings]
+    description: Landing pages, forms, and scheduling
+
+  phase_5:
+    name: Monetization
+    modules: [memberships]
+    description: Courses, payments, and subscriptions
+
+  phase_6:
+    name: White Label
+    modules: [whitelabel/branding]
+    description: Agency customization and multi-tenancy
+
+commands:
+  plan: "moai-adk plan --spec-dir specs/"
+  implement: "moai-adk run --module {module_name}"
+  test: "moai-adk test --coverage"
+  deploy: "moai-adk deploy --env {environment}"

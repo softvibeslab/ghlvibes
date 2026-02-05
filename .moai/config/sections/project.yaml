@@ -1,0 +1,9 @@
+project:
+  name: gohighlevel-clone
+  description: ''
+  type: ''
+  locale: '{{LOCALE}}'
+  created_at: '2026-01-26T11:24:51.549782Z'
+  initialized: 'true'
+github:
+  profile_name: softvibeslab

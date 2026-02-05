@@ -1,0 +1,101 @@
+# GoHighLevel Clone - CRM Pipelines SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: crm
+domain: pipelines
+version: "1.0.0"
+skills_required:
+  - moai-domain-database
+  - moai-workflow-tdd
+  - moai-lib-fastapi
+
+specs:
+  - id: SPEC-CRM-009
+    title: Create Pipeline
+    priority: high
+    ears:
+      event: When a user creates a new sales pipeline
+      action: the system shall validate pipeline name, create default stages, and set permissions
+      result: new pipeline with configurable stages and team access
+      state: created
+    defaults:
+      stages: [Lead, Qualified, Proposal, Negotiation, Closed Won, Closed Lost]
+    tests:
+      - test_create_pipeline
+      - test_pipeline_unique_name
+      - test_pipeline_default_stages
+
+  - id: SPEC-CRM-010
+    title: Configure Pipeline Stages
+    priority: high
+    ears:
+      event: When a user adds, removes, or reorders stages in a pipeline
+      action: the system shall update stage configuration and migrate existing contacts
+      result: updated pipeline structure with preserved data integrity
+      state: configured
+    constraints:
+      - min_stages: 2
+      - max_stages: 20
+    tests:
+      - test_add_stage
+      - test_remove_stage_with_contacts
+      - test_reorder_stages
+
+  - id: SPEC-CRM-011
+    title: Pipeline Analytics
+    priority: medium
+    ears:
+      event: When viewing pipeline analytics
+      action: the system shall compute conversion rates, velocity, and value per stage
+      result: dashboard with visual funnel metrics
+      state: analyzed
+    metrics:
+      - conversion_rate_per_stage
+      - average_time_in_stage
+      - total_pipeline_value
+      - win_rate
+    tests:
+      - test_conversion_calculation
+      - test_velocity_metrics
+      - test_value_aggregation
+
+  - id: SPEC-CRM-012
+    title: Deal Value Tracking
+    priority: high
+    ears:
+      event: When assigning or updating deal value for a contact in pipeline
+      action: the system shall store value, track changes, and update pipeline totals
+      result: contact with deal value and pipeline value recalculated
+      state: valued
+    currency:
+      default: USD
+      multi_currency: true
+    tests:
+      - test_set_deal_value
+      - test_update_deal_value
+      - test_pipeline_total_value
+
+  - id: SPEC-CRM-013
+    title: Pipeline Automation Rules
+    priority: high
+    ears:
+      event: When a contact meets automation criteria in pipeline
+      action: the system shall execute configured actions (move stage, send notification, assign task)
+      result: automated pipeline progression with action logs
+      state: automated
+    triggers:
+      - time_in_stage_exceeds
+      - deal_value_threshold
+      - activity_completed
+      - custom_field_change
+    actions:
+      - move_to_stage
+      - send_notification
+      - create_task
+      - add_tag
+      - trigger_workflow
+    tests:
+      - test_time_based_automation
+      - test_value_threshold_automation
+      - test_automation_action_chain

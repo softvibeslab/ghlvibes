@@ -1,0 +1,284 @@
+# GoHighLevel Clone - Memberships & Courses SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: memberships
+domain: courses
+version: "1.0.0"
+skills_required:
+  - moai-platform-supabase
+  - moai-security-api
+  - moai-lib-nextjs
+  - moai-lib-react
+
+specs:
+  - id: SPEC-MEM-001
+    title: Create Course
+    priority: critical
+    ears:
+      event: When a user creates a new course
+      action: the system shall initialize course structure with modules and settings
+      result: new course ready for content
+      state: created
+    course_config:
+      - title
+      - description
+      - thumbnail
+      - instructor
+      - category
+      - access_type: [free, paid, subscription]
+      - drip_content: boolean
+    tests:
+      - test_create_course
+      - test_course_settings
+      - test_course_thumbnail
+
+  - id: SPEC-MEM-002
+    title: Create Module/Lesson
+    priority: critical
+    ears:
+      event: When adding a module or lesson to a course
+      action: the system shall create hierarchical content structure
+      result: organized course with modules and lessons
+      state: structured
+    hierarchy:
+      course:
+        modules:
+          lessons:
+            - video
+            - text
+            - quiz
+            - download
+    tests:
+      - test_add_module
+      - test_add_lesson
+      - test_reorder_content
+
+  - id: SPEC-MEM-003
+    title: Upload Video Content
+    priority: critical
+    ears:
+      event: When uploading a video to a lesson
+      action: the system shall process video, generate thumbnails, and store in CDN
+      result: video ready for streaming with multiple quality options
+      state: hosted
+    video_config:
+      max_size_gb: 5
+      formats: [mp4, mov, webm]
+      processing:
+        - transcode_hls
+        - generate_thumbnail
+        - extract_duration
+      qualities: [360p, 720p, 1080p]
+      cdn: cloudflare_stream
+    tests:
+      - test_video_upload
+      - test_video_processing
+      - test_adaptive_streaming
+
+  - id: SPEC-MEM-004
+    title: Create Quiz
+    priority: medium
+    ears:
+      event: When adding a quiz to a lesson
+      action: the system shall configure questions, answers, and passing criteria
+      result: interactive quiz with auto-grading
+      state: configured
+    question_types:
+      - multiple_choice
+      - true_false
+      - fill_in_blank
+      - matching
+    quiz_config:
+      passing_score: 70
+      attempts_allowed: 3
+      show_correct_answers: after_submit
+      time_limit: optional
+    tests:
+      - test_quiz_creation
+      - test_question_types
+      - test_auto_grading
+
+  - id: SPEC-MEM-005
+    title: Drip Content Schedule
+    priority: high
+    ears:
+      event: When configuring drip content for a course
+      action: the system shall set release schedule based on enrollment date
+      result: time-released content access
+      state: scheduled
+    drip_options:
+      - days_after_enrollment
+      - specific_date
+      - after_previous_completion
+    tests:
+      - test_drip_schedule
+      - test_content_unlock
+      - test_drip_notifications
+
+  - id: SPEC-MEM-006
+    title: Track Progress
+    priority: critical
+    ears:
+      event: When a member completes a lesson or module
+      action: the system shall record progress and unlock subsequent content
+      result: updated progress with completion percentage
+      state: progressed
+    tracking:
+      - lesson_completion
+      - video_watch_time
+      - quiz_scores
+      - module_completion
+      - course_completion
+    completion_rules:
+      video: watch_80_percent
+      quiz: pass_required
+    tests:
+      - test_progress_tracking
+      - test_completion_calculation
+      - test_unlock_next
+
+  - id: SPEC-MEM-007
+    title: Issue Certificate
+    priority: medium
+    ears:
+      event: When a member completes a course
+      action: the system shall generate and deliver completion certificate
+      result: personalized certificate available for download
+      state: certified
+    certificate_config:
+      - template
+      - include_name
+      - include_date
+      - include_course_name
+      - unique_id
+      - verification_url
+    tests:
+      - test_certificate_generation
+      - test_certificate_verification
+
+  - id: SPEC-MEM-008
+    title: Create Membership Product
+    priority: critical
+    ears:
+      event: When creating a membership product
+      action: the system shall configure pricing, access rules, and included courses
+      result: purchasable membership product
+      state: active
+    pricing_options:
+      - one_time
+      - subscription_monthly
+      - subscription_yearly
+      - payment_plan
+    access_config:
+      - courses_included
+      - access_duration: [lifetime, time_limited]
+      - trial_period
+    tests:
+      - test_product_creation
+      - test_pricing_config
+      - test_access_rules
+
+  - id: SPEC-MEM-009
+    title: Process Payment
+    priority: critical
+    ears:
+      event: When a user purchases membership or course
+      action: the system shall process payment via Stripe and grant access
+      result: payment completed with access provisioned
+      state: paid
+    payment_flow:
+      - validate_product
+      - create_stripe_checkout
+      - handle_webhook
+      - grant_access
+      - send_receipt
+      - create_crm_record
+    stripe_features:
+      - checkout_session
+      - subscriptions
+      - payment_intents
+      - webhooks
+    tests:
+      - test_one_time_payment
+      - test_subscription_payment
+      - test_payment_webhook
+      - test_access_grant
+
+  - id: SPEC-MEM-010
+    title: Handle Subscription Lifecycle
+    priority: critical
+    ears:
+      event: When subscription event occurs (renewal, cancellation, failure)
+      action: the system shall update access and notify member
+      result: subscription status updated with appropriate access
+      state: updated
+    events:
+      - invoice_paid: maintain_access
+      - invoice_failed: grace_period
+      - subscription_cancelled: revoke_on_end
+      - subscription_paused: pause_access
+    grace_period_days: 7
+    tests:
+      - test_renewal_success
+      - test_payment_failure
+      - test_cancellation
+      - test_grace_period
+
+  - id: SPEC-MEM-011
+    title: Manage Member Access
+    priority: high
+    ears:
+      event: When managing member course access
+      action: the system shall grant, revoke, or modify access permissions
+      result: updated member access with audit log
+      state: managed
+    operations:
+      - grant_access
+      - revoke_access
+      - extend_access
+      - pause_access
+    tests:
+      - test_manual_grant
+      - test_revoke_access
+      - test_access_extension
+
+  - id: SPEC-MEM-012
+    title: Community/Discussion Forum
+    priority: medium
+    ears:
+      event: When member interacts with course community
+      action: the system shall manage posts, comments, and notifications
+      result: active community engagement
+      state: engaged
+    features:
+      - create_post
+      - comment_on_post
+      - like_content
+      - mention_users
+      - moderation
+    tests:
+      - test_create_post
+      - test_comment
+      - test_moderation
+
+  - id: SPEC-MEM-013
+    title: Course Analytics
+    priority: medium
+    ears:
+      event: When viewing course analytics
+      action: the system shall aggregate engagement and completion metrics
+      result: instructor dashboard with insights
+      state: analyzed
+    metrics:
+      - total_enrollments
+      - active_members
+      - completion_rate
+      - average_progress
+      - lesson_engagement
+      - quiz_performance
+      - revenue
+    tests:
+      - test_enrollment_stats
+      - test_completion_metrics
+      - test_revenue_report

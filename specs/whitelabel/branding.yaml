@@ -1,0 +1,202 @@
+# GoHighLevel Clone - White Label Branding SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: whitelabel
+domain: branding
+version: "1.0.0"
+skills_required:
+  - moai-security-auth
+  - moai-domain-security
+  - moai-lib-nextjs
+  - moai-platform-supabase
+
+specs:
+  - id: SPEC-WHL-001
+    title: Configure White Label Settings
+    priority: critical
+    ears:
+      event: When configuring white label branding for agency
+      action: the system shall apply custom branding across all touchpoints
+      result: fully branded platform with agency identity
+      state: branded
+    branding_elements:
+      - company_name
+      - logo_light
+      - logo_dark
+      - favicon
+      - primary_color
+      - secondary_color
+      - accent_color
+      - font_family
+      - support_email
+      - support_url
+    tests:
+      - test_logo_upload
+      - test_color_application
+      - test_branding_preview
+
+  - id: SPEC-WHL-002
+    title: Custom Domain Setup
+    priority: critical
+    ears:
+      event: When connecting a custom domain for white label
+      action: the system shall configure DNS, SSL certificate, and routing
+      result: custom domain serving branded application
+      state: connected
+    domain_config:
+      - app_domain: app.agency.com
+      - api_domain: api.agency.com
+      - links_domain: go.agency.com
+    ssl:
+      provider: letsencrypt
+      auto_renewal: true
+    tests:
+      - test_domain_verification
+      - test_ssl_provisioning
+      - test_dns_configuration
+
+  - id: SPEC-WHL-003
+    title: Email White Labeling
+    priority: high
+    ears:
+      event: When configuring email branding
+      action: the system shall apply custom from address, domain, and templates
+      result: all system emails sent with agency branding
+      state: configured
+    email_config:
+      - from_name
+      - from_email
+      - reply_to
+      - sending_domain
+      - dkim_setup
+      - spf_setup
+      - dmarc_setup
+    templates:
+      - welcome_email
+      - password_reset
+      - notifications
+      - reports
+    tests:
+      - test_email_domain_setup
+      - test_dkim_verification
+      - test_template_branding
+
+  - id: SPEC-WHL-004
+    title: Mobile App White Label
+    priority: high
+    ears:
+      event: When configuring white label mobile app
+      action: the system shall customize app assets and publish to stores
+      result: branded mobile app available for download
+      state: published
+    app_config:
+      - app_name
+      - app_icon
+      - splash_screen
+      - app_store_listing
+      - play_store_listing
+      - bundle_id
+      - package_name
+    publishing:
+      ios:
+        - apple_developer_account
+        - app_store_connect
+      android:
+        - google_play_console
+    tests:
+      - test_asset_customization
+      - test_build_generation
+      - test_store_submission
+
+  - id: SPEC-WHL-005
+    title: Sub-Account Management
+    priority: critical
+    ears:
+      event: When creating a sub-account for client
+      action: the system shall provision isolated environment with inherited branding
+      result: new sub-account with agency branding
+      state: created
+    sub_account_config:
+      - account_name
+      - admin_user
+      - plan_features
+      - usage_limits
+      - billing_type: [agency_pays, client_pays]
+    isolation:
+      - separate_contacts
+      - separate_workflows
+      - separate_funnels
+      - shared_templates_optional
+    tests:
+      - test_sub_account_creation
+      - test_data_isolation
+      - test_branding_inheritance
+
+  - id: SPEC-WHL-006
+    title: Feature Access Control
+    priority: high
+    ears:
+      event: When configuring feature access for sub-accounts
+      action: the system shall enable or disable features per account
+      result: customized feature set per sub-account
+      state: configured
+    controllable_features:
+      - crm
+      - campaigns
+      - funnels
+      - websites
+      - calendars
+      - memberships
+      - phone_system
+      - reputation
+      - reporting
+    tests:
+      - test_feature_toggle
+      - test_feature_visibility
+      - test_plan_enforcement
+
+  - id: SPEC-WHL-007
+    title: Usage Billing
+    priority: high
+    ears:
+      event: When tracking usage for billing
+      action: the system shall meter usage and apply charges
+      result: accurate billing based on consumption
+      state: metered
+    billable_metrics:
+      - contacts
+      - emails_sent
+      - sms_sent
+      - phone_minutes
+      - storage_gb
+      - active_users
+      - workflows_active
+    billing_models:
+      - included_allowance
+      - overage_charges
+      - tiered_pricing
+    tests:
+      - test_usage_tracking
+      - test_billing_calculation
+      - test_overage_charges
+
+  - id: SPEC-WHL-008
+    title: Agency Dashboard
+    priority: high
+    ears:
+      event: When viewing agency dashboard
+      action: the system shall display aggregated metrics across all sub-accounts
+      result: overview of agency performance
+      state: displayed
+    dashboard_metrics:
+      - total_sub_accounts
+      - total_contacts
+      - total_revenue
+      - mrr_growth
+      - usage_trends
+      - top_performing_accounts
+    tests:
+      - test_metric_aggregation
+      - test_dashboard_loading
+      - test_account_filtering

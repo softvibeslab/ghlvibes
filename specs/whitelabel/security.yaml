@@ -1,0 +1,257 @@
+# GoHighLevel Clone - Security SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: whitelabel
+domain: security
+version: "1.0.0"
+skills_required:
+  - moai-security-auth
+  - moai-domain-security
+  - moai-security-api
+
+specs:
+  - id: SPEC-SEC-001
+    title: User Authentication
+    priority: critical
+    ears:
+      event: When a user attempts to log in
+      action: the system shall verify credentials and issue session token
+      result: authenticated session with JWT token
+      state: authenticated
+    auth_methods:
+      - email_password
+      - magic_link
+      - sso_saml
+      - sso_oauth
+      - two_factor
+    session_config:
+      token_type: jwt
+      access_token_ttl: 15m
+      refresh_token_ttl: 7d
+      secure_cookie: true
+    tests:
+      - test_login_success
+      - test_login_invalid_credentials
+      - test_token_refresh
+      - test_session_expiry
+
+  - id: SPEC-SEC-002
+    title: Two-Factor Authentication
+    priority: high
+    ears:
+      event: When 2FA is enabled or required
+      action: the system shall verify second factor during login
+      result: enhanced authentication with second factor
+      state: verified
+    twofa_methods:
+      - totp_app
+      - sms_code
+      - email_code
+      - backup_codes
+    tests:
+      - test_2fa_setup
+      - test_2fa_verification
+      - test_backup_codes
+
+  - id: SPEC-SEC-003
+    title: Role-Based Access Control
+    priority: critical
+    ears:
+      event: When a user attempts an action
+      action: the system shall check permissions against role and deny if unauthorized
+      result: authorized action or access denied
+      state: authorized
+    roles:
+      - super_admin
+      - agency_admin
+      - agency_user
+      - account_admin
+      - account_user
+      - custom_role
+    permission_categories:
+      - contacts
+      - campaigns
+      - funnels
+      - calendar
+      - reporting
+      - settings
+      - billing
+    tests:
+      - test_permission_check
+      - test_role_assignment
+      - test_custom_role_creation
+      - test_access_denied
+
+  - id: SPEC-SEC-004
+    title: API Authentication
+    priority: critical
+    ears:
+      event: When an API request is received
+      action: the system shall validate API key or OAuth token
+      result: authenticated API access with rate limiting
+      state: api_authenticated
+    api_auth_methods:
+      - api_key
+      - oauth2_client_credentials
+      - oauth2_authorization_code
+    rate_limiting:
+      default: 100/minute
+      burst: 200
+      by_endpoint: configurable
+    tests:
+      - test_api_key_auth
+      - test_oauth_flow
+      - test_rate_limiting
+      - test_api_key_rotation
+
+  - id: SPEC-SEC-005
+    title: Data Encryption
+    priority: critical
+    ears:
+      event: When storing or transmitting sensitive data
+      action: the system shall encrypt data using industry standards
+      result: encrypted data at rest and in transit
+      state: encrypted
+    encryption:
+      at_rest:
+        algorithm: AES-256
+        key_management: aws_kms
+      in_transit:
+        protocol: TLS_1_3
+        certificate: auto_managed
+    sensitive_fields:
+      - passwords: bcrypt_hash
+      - api_keys: encrypted
+      - payment_info: tokenized
+      - personal_data: encrypted
+    tests:
+      - test_password_hashing
+      - test_field_encryption
+      - test_tls_enforcement
+
+  - id: SPEC-SEC-006
+    title: Audit Logging
+    priority: high
+    ears:
+      event: When a significant action is performed
+      action: the system shall record audit log with actor and details
+      result: comprehensive audit trail for compliance
+      state: logged
+    logged_actions:
+      - login_attempts
+      - permission_changes
+      - data_exports
+      - settings_changes
+      - api_key_operations
+      - user_management
+      - billing_operations
+    log_retention: 2_years
+    tests:
+      - test_audit_logging
+      - test_log_immutability
+      - test_log_search
+
+  - id: SPEC-SEC-007
+    title: Brute Force Protection
+    priority: critical
+    ears:
+      event: When detecting multiple failed login attempts
+      action: the system shall implement rate limiting and CAPTCHA
+      result: blocked brute force attack
+      state: protected
+    protection_config:
+      failed_attempts_before_captcha: 3
+      failed_attempts_before_lockout: 10
+      lockout_duration: 30m
+      ip_blocking: temporary
+    tests:
+      - test_captcha_trigger
+      - test_account_lockout
+      - test_ip_rate_limiting
+
+  - id: SPEC-SEC-008
+    title: GDPR Compliance
+    priority: critical
+    ears:
+      event: When handling personal data or receiving data request
+      action: the system shall comply with GDPR requirements
+      result: compliant data handling with user rights
+      state: compliant
+    gdpr_features:
+      - consent_management
+      - data_export: json_format
+      - data_deletion: right_to_erasure
+      - data_portability
+      - processing_records
+      - breach_notification
+    tests:
+      - test_consent_recording
+      - test_data_export
+      - test_data_deletion
+      - test_breach_notification
+
+  - id: SPEC-SEC-009
+    title: OWASP Top 10 Protection
+    priority: critical
+    ears:
+      event: When processing user input or requests
+      action: the system shall validate and sanitize against common vulnerabilities
+      result: protected application against OWASP threats
+      state: secured
+    protections:
+      - sql_injection: parameterized_queries
+      - xss: output_encoding
+      - csrf: token_validation
+      - broken_auth: session_management
+      - sensitive_exposure: encryption
+      - xxe: disabled_external_entities
+      - access_control: rbac
+      - security_misconfig: hardened_defaults
+      - insecure_deserialization: input_validation
+      - logging_monitoring: audit_logs
+    tests:
+      - test_sql_injection_prevention
+      - test_xss_prevention
+      - test_csrf_protection
+
+  - id: SPEC-SEC-010
+    title: Webhook Security
+    priority: high
+    ears:
+      event: When sending or receiving webhooks
+      action: the system shall sign payloads and verify signatures
+      result: secure webhook communication
+      state: verified
+    webhook_security:
+      outgoing:
+        - signature_header: X-Signature
+        - algorithm: HMAC-SHA256
+        - timestamp_validation
+      incoming:
+        - signature_verification
+        - ip_whitelist_optional
+        - replay_protection
+    tests:
+      - test_webhook_signing
+      - test_signature_verification
+      - test_replay_prevention
+
+  - id: SPEC-SEC-011
+    title: Session Management
+    priority: high
+    ears:
+      event: When managing user sessions
+      action: the system shall enforce session security policies
+      result: secure session lifecycle
+      state: managed
+    session_policies:
+      - concurrent_session_limit: 5
+      - idle_timeout: 30m
+      - absolute_timeout: 24h
+      - session_invalidation_on_password_change
+      - device_tracking
+    tests:
+      - test_session_timeout
+      - test_concurrent_sessions
+      - test_password_change_invalidation

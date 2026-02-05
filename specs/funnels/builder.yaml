@@ -1,0 +1,239 @@
+# GoHighLevel Clone - Funnels Builder SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: funnels
+domain: builder
+version: "1.0.0"
+skills_required:
+  - moai-lib-nextjs
+  - moai-lib-react
+  - moai-platform-supabase
+  - moai-domain-frontend
+
+specs:
+  - id: SPEC-FUN-001
+    title: Create Funnel
+    priority: critical
+    ears:
+      event: When a user creates a new funnel
+      action: the system shall initialize funnel structure with default template
+      result: new funnel project ready for editing
+      state: created
+    templates:
+      - blank
+      - lead_capture
+      - sales_page
+      - webinar_registration
+      - product_launch
+      - tripwire
+    tests:
+      - test_create_blank_funnel
+      - test_create_from_template
+      - test_funnel_naming
+
+  - id: SPEC-FUN-002
+    title: Add Funnel Step
+    priority: critical
+    ears:
+      event: When a user adds a new step to the funnel
+      action: the system shall create page with step type configuration
+      result: new step linked in funnel flow
+      state: added
+    step_types:
+      - landing_page
+      - opt_in
+      - sales_page
+      - order_form
+      - upsell
+      - downsell
+      - thank_you
+      - webinar
+    tests:
+      - test_add_step
+      - test_step_order
+      - test_step_linking
+
+  - id: SPEC-FUN-003
+    title: Drag-and-Drop Editor
+    priority: critical
+    ears:
+      event: When a user drags a component onto the page
+      action: the system shall render component preview and update page structure
+      result: visual editor with real-time preview
+      state: editing
+    components:
+      sections:
+        - hero
+        - features
+        - testimonials
+        - pricing
+        - faq
+        - footer
+      elements:
+        - heading
+        - paragraph
+        - image
+        - video
+        - button
+        - form
+        - countdown
+        - divider
+    tests:
+      - test_drag_drop_component
+      - test_component_resize
+      - test_component_reorder
+      - test_undo_redo
+
+  - id: SPEC-FUN-004
+    title: Component Styling
+    priority: high
+    ears:
+      event: When a user customizes component styles
+      action: the system shall apply CSS changes with live preview
+      result: styled component with saved settings
+      state: styled
+    style_options:
+      - colors
+      - fonts
+      - spacing
+      - borders
+      - shadows
+      - animations
+      - responsive_breakpoints
+    tests:
+      - test_style_changes
+      - test_responsive_preview
+      - test_style_persistence
+
+  - id: SPEC-FUN-005
+    title: Form Builder
+    priority: critical
+    ears:
+      event: When a user adds or configures a form
+      action: the system shall create form with fields and validation rules
+      result: functional form connected to CRM
+      state: configured
+    field_types:
+      - text
+      - email
+      - phone
+      - dropdown
+      - checkbox
+      - radio
+      - textarea
+      - date
+      - file_upload
+      - hidden
+    validations:
+      - required
+      - email_format
+      - phone_format
+      - min_length
+      - max_length
+      - regex_pattern
+    tests:
+      - test_form_creation
+      - test_field_validation
+      - test_form_submission
+      - test_crm_integration
+
+  - id: SPEC-FUN-006
+    title: Embed Calendar
+    priority: high
+    ears:
+      event: When a user embeds a booking calendar on page
+      action: the system shall render calendar widget with availability
+      result: interactive calendar for visitor booking
+      state: embedded
+    config:
+      - calendar_selection
+      - display_mode: [inline, popup]
+      - time_slots_visible
+      - timezone_detection
+    tests:
+      - test_calendar_embed
+      - test_timezone_handling
+      - test_booking_from_funnel
+
+  - id: SPEC-FUN-007
+    title: Page SEO Settings
+    priority: medium
+    ears:
+      event: When configuring page SEO
+      action: the system shall set meta tags, OG data, and sitemap inclusion
+      result: optimized page for search engines
+      state: optimized
+    seo_fields:
+      - title
+      - description
+      - keywords
+      - og_image
+      - og_title
+      - og_description
+      - canonical_url
+      - robots
+    tests:
+      - test_meta_tags
+      - test_og_tags
+      - test_sitemap_generation
+
+  - id: SPEC-FUN-008
+    title: Mobile Responsiveness
+    priority: critical
+    ears:
+      event: When previewing page on different devices
+      action: the system shall render responsive layout with device-specific adjustments
+      result: optimized display across desktop, tablet, mobile
+      state: responsive
+    breakpoints:
+      desktop: 1200px
+      tablet: 768px
+      mobile: 480px
+    features:
+      - hide_on_device
+      - reorder_on_mobile
+      - font_scaling
+    tests:
+      - test_desktop_preview
+      - test_tablet_preview
+      - test_mobile_preview
+      - test_responsive_images
+
+  - id: SPEC-FUN-009
+    title: Page Versioning
+    priority: medium
+    ears:
+      event: When saving page changes
+      action: the system shall create version snapshot with rollback capability
+      result: version history with restore option
+      state: versioned
+    retention:
+      max_versions: 50
+      auto_save_interval: 30s
+    tests:
+      - test_auto_save
+      - test_version_creation
+      - test_rollback
+
+  - id: SPEC-FUN-010
+    title: Publish Funnel
+    priority: critical
+    ears:
+      event: When publishing a funnel
+      action: the system shall deploy pages to CDN with custom domain
+      result: live funnel accessible via URL
+      state: deployed
+    deployment:
+      cdn: cloudflare
+      ssl: auto_provision
+      cache_invalidation: true
+    domain_config:
+      - subdomain
+      - custom_domain
+      - path_prefix
+    tests:
+      - test_publish_funnel
+      - test_custom_domain
+      - test_ssl_provisioning
+      - test_cdn_caching

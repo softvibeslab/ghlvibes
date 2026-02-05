@@ -1,0 +1,160 @@
+# GoHighLevel Clone - Funnels Analytics SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: funnels
+domain: analytics
+version: "1.0.0"
+skills_required:
+  - moai-domain-database
+  - moai-lib-fastapi
+  - moai-domain-ml
+
+specs:
+  - id: SPEC-FAN-001
+    title: Track Page Views
+    priority: critical
+    ears:
+      event: When a visitor loads a funnel page
+      action: the system shall record page view with visitor metadata
+      result: tracked view with session and source data
+      state: tracked
+    data_captured:
+      - page_url
+      - timestamp
+      - session_id
+      - visitor_id
+      - utm_params
+      - referrer
+      - device_type
+      - geo_location
+    tests:
+      - test_pageview_tracking
+      - test_utm_capture
+      - test_session_tracking
+
+  - id: SPEC-FAN-002
+    title: Track Conversions
+    priority: critical
+    ears:
+      event: When a visitor completes a funnel action (form submit, purchase)
+      action: the system shall record conversion with attribution
+      result: conversion event with full funnel path
+      state: converted
+    conversion_types:
+      - form_submission
+      - purchase
+      - calendar_booking
+      - button_click
+    attribution:
+      model: last_touch
+      window_days: 30
+    tests:
+      - test_conversion_tracking
+      - test_attribution_model
+      - test_conversion_value
+
+  - id: SPEC-FAN-003
+    title: Funnel Flow Analytics
+    priority: high
+    ears:
+      event: When viewing funnel analytics
+      action: the system shall compute step-by-step conversion rates and drop-offs
+      result: visual funnel flow with metrics per step
+      state: analyzed
+    metrics:
+      - visitors_per_step
+      - conversion_rate_per_step
+      - drop_off_rate
+      - time_on_page
+      - scroll_depth
+    tests:
+      - test_funnel_flow_calculation
+      - test_dropoff_analysis
+
+  - id: SPEC-FAN-004
+    title: Heatmaps and Click Tracking
+    priority: medium
+    ears:
+      event: When heatmap is enabled for a page
+      action: the system shall record click positions and scroll behavior
+      result: visual heatmap overlay showing engagement zones
+      state: mapped
+    tracking:
+      - click_positions
+      - scroll_depth
+      - hover_time
+      - rage_clicks
+    tests:
+      - test_click_heatmap
+      - test_scroll_heatmap
+
+  - id: SPEC-FAN-005
+    title: A/B Test Pages
+    priority: high
+    ears:
+      event: When setting up page A/B test
+      action: the system shall create variant, split traffic, and track independently
+      result: comparative metrics with statistical significance
+      state: testing
+    config:
+      max_variants: 5
+      traffic_split: percentage
+      significance_threshold: 0.95
+    tests:
+      - test_variant_creation
+      - test_traffic_split
+      - test_winner_calculation
+
+  - id: SPEC-FAN-006
+    title: Cart Abandonment Tracking
+    priority: high
+    ears:
+      event: When a visitor abandons checkout
+      action: the system shall record abandonment and trigger recovery workflow
+      result: abandonment event with retargeting triggered
+      state: abandoned
+    recovery:
+      - email_sequence
+      - sms_reminder
+      - retargeting_ads
+    tests:
+      - test_abandonment_detection
+      - test_recovery_trigger
+      - test_recovery_conversion
+
+  - id: SPEC-FAN-007
+    title: Revenue Attribution
+    priority: high
+    ears:
+      event: When a purchase is completed
+      action: the system shall attribute revenue to funnel and traffic source
+      result: revenue metrics with ROI calculation
+      state: attributed
+    metrics:
+      - revenue_per_funnel
+      - revenue_per_source
+      - average_order_value
+      - customer_lifetime_value
+      - return_on_ad_spend
+    tests:
+      - test_revenue_attribution
+      - test_roi_calculation
+
+  - id: SPEC-FAN-008
+    title: Real-time Dashboard
+    priority: medium
+    ears:
+      event: When viewing live analytics
+      action: the system shall stream current visitor data and conversions
+      result: real-time dashboard with live metrics
+      state: streaming
+    realtime_data:
+      - active_visitors
+      - current_page_views
+      - recent_conversions
+      - live_revenue
+    refresh_interval: 5s
+    tests:
+      - test_realtime_updates
+      - test_websocket_connection

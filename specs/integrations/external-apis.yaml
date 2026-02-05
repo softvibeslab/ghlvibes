@@ -1,0 +1,261 @@
+# GoHighLevel Clone - External API Integrations SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: integrations
+domain: external_apis
+version: "1.0.0"
+skills_required:
+  - moai-context7-integration
+  - moai-lib-fastapi
+  - moai-security-api
+
+specs:
+  - id: SPEC-INT-001
+    title: Twilio Integration
+    priority: critical
+    ears:
+      event: When sending SMS/MMS or making calls
+      action: the system shall use Twilio API with proper error handling
+      result: communication delivered with status tracking
+      state: delivered
+    twilio_features:
+      - send_sms
+      - send_mms
+      - voice_calls
+      - voicemail_drop
+      - phone_numbers
+      - webhooks
+    config:
+      account_sid: required
+      auth_token: encrypted
+      messaging_service_sid: optional
+    tests:
+      - test_sms_send
+      - test_call_initiate
+      - test_webhook_handling
+
+  - id: SPEC-INT-002
+    title: Stripe Integration
+    priority: critical
+    ears:
+      event: When processing payments or subscriptions
+      action: the system shall use Stripe API with PCI compliance
+      result: payment processed with receipt
+      state: paid
+    stripe_features:
+      - checkout_sessions
+      - payment_intents
+      - subscriptions
+      - invoices
+      - refunds
+      - webhooks
+      - connect_for_marketplace
+    tests:
+      - test_checkout_creation
+      - test_subscription_management
+      - test_webhook_verification
+
+  - id: SPEC-INT-003
+    title: Google Calendar Integration
+    priority: high
+    ears:
+      event: When syncing calendar events
+      action: the system shall authenticate via OAuth and sync bidirectionally
+      result: calendars synchronized in real-time
+      state: synced
+    google_features:
+      - oauth2_authentication
+      - list_calendars
+      - create_events
+      - update_events
+      - delete_events
+      - watch_for_changes
+    tests:
+      - test_oauth_flow
+      - test_event_creation
+      - test_bidirectional_sync
+
+  - id: SPEC-INT-004
+    title: Zoom Integration
+    priority: high
+    ears:
+      event: When creating video meetings
+      action: the system shall use Zoom API to create meeting links
+      result: meeting created with join URL
+      state: created
+    zoom_features:
+      - oauth2_authentication
+      - create_meeting
+      - get_meeting_details
+      - delete_meeting
+      - meeting_webhooks
+    tests:
+      - test_meeting_creation
+      - test_meeting_deletion
+
+  - id: SPEC-INT-005
+    title: Facebook/Meta Integration
+    priority: high
+    ears:
+      event: When connecting Facebook Messenger or Ads
+      action: the system shall authenticate and manage page connections
+      result: active Facebook integration
+      state: connected
+    facebook_features:
+      messenger:
+        - receive_messages
+        - send_messages
+        - quick_replies
+        - templates
+      ads:
+        - lead_ads_webhooks
+        - audience_sync
+        - conversion_tracking
+      pages:
+        - page_access
+        - post_management
+    tests:
+      - test_messenger_webhook
+      - test_lead_ad_capture
+
+  - id: SPEC-INT-006
+    title: Email Provider Integration
+    priority: critical
+    ears:
+      event: When sending transactional or marketing emails
+      action: the system shall route through configured email provider
+      result: email delivered with tracking
+      state: sent
+    providers:
+      - sendgrid
+      - mailgun
+      - aws_ses
+      - postmark
+      - smtp_custom
+    features:
+      - send_email
+      - templates
+      - tracking_webhooks
+      - bounce_handling
+      - unsubscribe_handling
+    tests:
+      - test_email_sending
+      - test_tracking_webhooks
+      - test_bounce_processing
+
+  - id: SPEC-INT-007
+    title: Zapier/Webhook Integration
+    priority: high
+    ears:
+      event: When connecting to Zapier or external webhooks
+      action: the system shall expose triggers and actions via API
+      result: external automation connected
+      state: integrated
+    zapier_features:
+      triggers:
+        - new_contact
+        - form_submitted
+        - appointment_booked
+        - payment_received
+        - tag_added
+      actions:
+        - create_contact
+        - update_contact
+        - add_tag
+        - send_sms
+        - create_opportunity
+    tests:
+      - test_trigger_webhook
+      - test_action_endpoint
+
+  - id: SPEC-INT-008
+    title: OpenAI/LLM Integration
+    priority: high
+    ears:
+      event: When AI features require LLM processing
+      action: the system shall call AI provider API with context
+      result: AI-generated response with guardrails
+      state: processed
+    providers:
+      primary: openai
+      fallback: anthropic
+    features:
+      - chat_completion
+      - embeddings
+      - function_calling
+      - streaming_responses
+    guardrails:
+      - content_filtering
+      - token_limits
+      - cost_tracking
+    tests:
+      - test_completion_request
+      - test_fallback_provider
+      - test_content_filtering
+
+  - id: SPEC-INT-009
+    title: Google/Microsoft OAuth
+    priority: high
+    ears:
+      event: When users authenticate with Google or Microsoft
+      action: the system shall handle OAuth flow and token management
+      result: authenticated user with profile data
+      state: authenticated
+    providers:
+      google:
+        - profile_access
+        - email_access
+        - calendar_access
+      microsoft:
+        - profile_access
+        - email_access
+        - outlook_calendar
+    tests:
+      - test_google_oauth
+      - test_microsoft_oauth
+      - test_token_refresh
+
+  - id: SPEC-INT-010
+    title: WhatsApp Business Integration
+    priority: medium
+    ears:
+      event: When sending WhatsApp messages
+      action: the system shall use WhatsApp Business API
+      result: message delivered via WhatsApp
+      state: delivered
+    whatsapp_features:
+      - template_messages
+      - session_messages
+      - media_messages
+      - webhooks
+    constraints:
+      - template_approval_required
+      - 24h_session_window
+    tests:
+      - test_template_send
+      - test_session_message
+      - test_webhook_handling
+
+  - id: SPEC-INT-011
+    title: CRM Sync (Salesforce, HubSpot)
+    priority: medium
+    ears:
+      event: When syncing with external CRM
+      action: the system shall map fields and sync contacts bidirectionally
+      result: contacts synchronized across systems
+      state: synced
+    crm_integrations:
+      - salesforce
+      - hubspot
+      - pipedrive
+      - zoho
+    sync_config:
+      direction: bidirectional
+      field_mapping: configurable
+      conflict_resolution: newest_wins
+      sync_frequency: real_time
+    tests:
+      - test_contact_sync
+      - test_field_mapping
+      - test_conflict_resolution

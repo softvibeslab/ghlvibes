@@ -1,0 +1,170 @@
+# GoHighLevel Clone - CRM Module SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: crm
+domain: contacts
+version: "1.0.0"
+skills_required:
+  - moai-domain-database
+  - moai-security-auth
+  - moai-lib-fastapi
+  - moai-platform-supabase
+
+specs:
+  - id: SPEC-CRM-001
+    title: Create Contact
+    priority: critical
+    ears:
+      event: When a user adds a new contact via API or UI
+      action: the system shall validate input data (email format, required fields, duplicates check) and store it in the database
+      result: a new contact entry with unique ID, timestamps, and source tracking
+      state: persisted
+    validations:
+      - email_format
+      - phone_format
+      - required_fields: [first_name, email]
+      - duplicate_check: [email, phone]
+    security:
+      - rbac: contacts.create
+      - audit_log: true
+    tests:
+      - test_create_contact_valid_data
+      - test_create_contact_duplicate_email
+      - test_create_contact_invalid_email
+      - test_create_contact_missing_required
+
+  - id: SPEC-CRM-002
+    title: Import Contacts from CSV
+    priority: high
+    ears:
+      event: When a user imports contacts from a CSV file via UI
+      action: the system shall parse the file, validate fields, detect duplicates, and bulk insert into the database
+      result: multiple new contact entries with import logs and error reports
+      state: imported
+    validations:
+      - file_format: csv
+      - max_rows: 10000
+      - field_mapping: required
+    batch_config:
+      chunk_size: 500
+      retry_on_failure: true
+    tests:
+      - test_import_valid_csv
+      - test_import_duplicate_handling
+      - test_import_large_file
+      - test_import_invalid_format
+
+  - id: SPEC-CRM-003
+    title: Update Pipeline Stage
+    priority: critical
+    ears:
+      event: When a lead progresses in the pipeline
+      action: the system shall update the stage, log the transition, and notify via workflow triggers
+      result: updated pipeline status with transition history
+      state: active
+    triggers:
+      - workflow_automation
+      - notification_send
+      - activity_log
+    tests:
+      - test_pipeline_stage_forward
+      - test_pipeline_stage_backward
+      - test_pipeline_triggers_workflow
+
+  - id: SPEC-CRM-004
+    title: Search and Filter Contacts
+    priority: high
+    ears:
+      event: When querying contacts with search criteria
+      action: the system shall perform fuzzy search using database indexes and apply filters
+      result: a paginated list of matching contacts sorted by relevance
+      state: queried
+    filters:
+      - tags
+      - source
+      - pipeline_stage
+      - date_range
+      - custom_fields
+    pagination:
+      default_limit: 50
+      max_limit: 200
+    security:
+      - rbac: contacts.read
+    tests:
+      - test_search_by_name
+      - test_search_by_email_partial
+      - test_filter_by_tags
+      - test_pagination
+
+  - id: SPEC-CRM-005
+    title: Tag Management
+    priority: medium
+    ears:
+      event: When a contact is tagged with a custom label
+      action: the system shall update the contact record and trigger associated workflows
+      result: tagged contact visible in filtered views
+      state: labeled
+    features:
+      - bulk_tagging
+      - tag_colors
+      - tag_groups
+    tests:
+      - test_add_single_tag
+      - test_add_multiple_tags
+      - test_remove_tag
+      - test_tag_triggers_workflow
+
+  - id: SPEC-CRM-006
+    title: Contact Opt-Out
+    priority: critical
+    ears:
+      event: When a contact opts out of communications
+      action: the system shall flag the record, prevent future messages, and log the opt-out reason
+      result: suppressed contact with compliance audit trail
+      state: opted-out
+    compliance:
+      - gdpr: true
+      - can_spam: true
+    tests:
+      - test_optout_email
+      - test_optout_sms
+      - test_optout_all
+      - test_optout_blocks_campaigns
+
+  - id: SPEC-CRM-007
+    title: External CRM Sync
+    priority: medium
+    ears:
+      event: When integrating with external CRM via API
+      action: the system shall sync contact data bidirectionally with conflict resolution
+      result: updated records across systems with sync logs
+      state: synchronized
+    integrations:
+      - salesforce
+      - hubspot
+      - pipedrive
+    sync_config:
+      direction: bidirectional
+      conflict_resolution: newest_wins
+      frequency: real_time
+    tests:
+      - test_sync_to_external
+      - test_sync_from_external
+      - test_sync_conflict_resolution
+
+  - id: SPEC-CRM-008
+    title: Soft Delete Contact
+    priority: medium
+    ears:
+      event: When a user deletes a contact
+      action: the system shall soft-delete (archive) the record and remove from active views
+      result: archived contact recoverable via admin
+      state: deleted
+    retention:
+      days: 90
+      admin_recovery: true
+    tests:
+      - test_soft_delete
+      - test_restore_contact
+      - test_permanent_delete_after_retention

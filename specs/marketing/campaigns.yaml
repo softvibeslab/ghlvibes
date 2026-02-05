@@ -1,0 +1,206 @@
+# GoHighLevel Clone - Marketing Campaigns SPECs
+# Format: EARS (Event-Actions-Result-State)
+# Framework: Moai-ADK
+
+module: marketing
+domain: campaigns
+version: "1.0.0"
+skills_required:
+  - moai-domain-ml
+  - moai-lib-fastapi
+  - moai-context7-integration
+  - moai-platform-supabase
+
+specs:
+  - id: SPEC-MKT-001
+    title: Create Campaign
+    priority: critical
+    ears:
+      event: When a user creates a new marketing campaign
+      action: the system shall configure campaign settings, target audience, and channel selection
+      result: campaign draft ready for content and scheduling
+      state: draft
+    channels:
+      - email
+      - sms
+      - mms
+      - voicemail_drop
+      - facebook_messenger
+      - whatsapp
+    tests:
+      - test_create_campaign
+      - test_campaign_audience_selection
+      - test_campaign_channel_config
+
+  - id: SPEC-MKT-002
+    title: Drip Campaign Sequence
+    priority: critical
+    ears:
+      event: When a new lead is captured from a form or trigger
+      action: the system shall initiate configured drip sequence with timed messages
+      result: scheduled messages queued for delivery
+      state: queued
+    sequence_config:
+      max_steps: 50
+      delay_types: [minutes, hours, days, weeks]
+      conditions: [opened, clicked, replied, not_opened]
+    tests:
+      - test_drip_sequence_start
+      - test_drip_conditional_branch
+      - test_drip_timing_accuracy
+
+  - id: SPEC-MKT-003
+    title: Send Email Campaign
+    priority: critical
+    ears:
+      event: When an email campaign is triggered
+      action: the system shall render personalized content, validate deliverability, and send via provider
+      result: delivered emails with tracking pixels embedded
+      state: sent
+    personalization:
+      - merge_fields
+      - dynamic_content
+      - conditional_blocks
+    providers:
+      - sendgrid
+      - mailgun
+      - ses
+    tracking:
+      - opens
+      - clicks
+      - bounces
+      - unsubscribes
+    tests:
+      - test_email_personalization
+      - test_email_tracking
+      - test_email_bounce_handling
+
+  - id: SPEC-MKT-004
+    title: Send SMS/MMS Campaign
+    priority: critical
+    ears:
+      event: When an SMS/MMS campaign is triggered
+      action: the system shall format message, check compliance, and send via Twilio
+      result: delivered messages with delivery receipts
+      state: delivered
+    compliance:
+      - tcpa: true
+      - opt_in_required: true
+      - quiet_hours: configurable
+    limits:
+      sms_chars: 160
+      mms_size_mb: 5
+    tests:
+      - test_sms_send
+      - test_mms_with_media
+      - test_sms_quiet_hours_block
+
+  - id: SPEC-MKT-005
+    title: Voicemail Drop
+    priority: medium
+    ears:
+      event: When a voicemail drop is triggered
+      action: the system shall use Twilio to deliver pre-recorded audio directly to voicemail
+      result: logged call with delivery status
+      state: delivered
+    config:
+      max_duration_seconds: 60
+      retry_on_busy: true
+    tests:
+      - test_voicemail_delivery
+      - test_voicemail_retry
+
+  - id: SPEC-MKT-006
+    title: Facebook Messenger Integration
+    priority: high
+    ears:
+      event: When connecting Facebook Messenger channel
+      action: the system shall authenticate OAuth, configure webhooks, and sync page settings
+      result: active Messenger integration with real-time message handling
+      state: integrated
+    features:
+      - send_messages
+      - receive_messages
+      - quick_replies
+      - templates
+    tests:
+      - test_messenger_oauth
+      - test_messenger_webhook
+      - test_messenger_send_receive
+
+  - id: SPEC-MKT-007
+    title: Handle Inbound Response
+    priority: critical
+    ears:
+      event: When a recipient replies to an SMS or email
+      action: the system shall parse response, route to assigned agent, and log interaction
+      result: updated conversation thread with notification
+      state: responded
+    routing:
+      - round_robin
+      - assigned_owner
+      - skill_based
+    tests:
+      - test_sms_reply_routing
+      - test_email_reply_parsing
+      - test_agent_notification
+
+  - id: SPEC-MKT-008
+    title: A/B Testing
+    priority: high
+    ears:
+      event: When A/B testing is configured for a campaign
+      action: the system shall split audience, send variants, and track performance metrics
+      result: comparative analytics with statistical significance
+      state: analyzed
+    variants:
+      max: 5
+      split_types: [random, percentage]
+    metrics:
+      - open_rate
+      - click_rate
+      - conversion_rate
+      - revenue
+    tests:
+      - test_ab_split
+      - test_ab_metrics
+      - test_ab_winner_selection
+
+  - id: SPEC-MKT-009
+    title: Campaign Throttling
+    priority: high
+    ears:
+      event: When a campaign reaches send limit or quota
+      action: the system shall pause sending, notify admin, and resume on schedule
+      result: throttled campaign with delivery spread
+      state: paused
+    limits:
+      daily_email: 10000
+      hourly_sms: 1000
+      concurrent_calls: 50
+    tests:
+      - test_email_throttle
+      - test_sms_throttle
+      - test_throttle_resume
+
+  - id: SPEC-MKT-010
+    title: Campaign Analytics
+    priority: high
+    ears:
+      event: When viewing campaign performance
+      action: the system shall aggregate metrics across channels and compute ROI
+      result: dashboard with delivery, engagement, and conversion stats
+      state: reported
+    metrics:
+      - sent_count
+      - delivered_count
+      - open_rate
+      - click_rate
+      - reply_rate
+      - conversion_rate
+      - revenue_generated
+      - cost_per_lead
+    tests:
+      - test_metrics_aggregation
+      - test_roi_calculation
+      - test_real_time_stats
