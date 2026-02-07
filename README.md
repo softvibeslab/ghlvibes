@@ -1,274 +1,459 @@
-# GoHighLevel Clone - Moai-ADK Project
+# GoHighLevel Clone - Marketing Automation Platform
 
-Plataforma de automatización de marketing todo-en-uno, construida con Moai-ADK siguiendo el enfoque SPEC-First.
+<div align="center">
 
+**A full-featured marketing automation platform built with modern technologies**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.12](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-green.svg)](https://fastapi.tiangolo.com)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-black.svg)](https://nextjs.org/)
 [![TRUST 5](https://img.shields.io/badge/TRUST%205-PASS-brightgreen)](https://github.com/alfred/moai-adk)
-[![Tests](https://img.shields.io/badge/Tests-108-blue)](backend/tests/workflows/)
+[![Tests](https://img.shields.io/badge/Tests-108+-blue.svg)](backend/tests/)
 [![Coverage](https://img.shields.io/badge/Coverage-85%25-brightgreen)](#)
-[![DDK](https://img.shields.io/badge/DDD-Cycle-Complete-purple)](.moai/specs/SPEC-WFL-001/)
+
+[Features](#features) • [Quick Start](#quick-start) • [Documentation](#documentation) • [Development](#development) • [Deployment](#deployment)
+
+</div>
+
+---
+
+## Overview
+
+GoHighLevel Clone is a comprehensive marketing automation platform designed to help businesses streamline their marketing, sales, and customer relationship management processes. Built with a modern tech stack and following Domain-Driven Design (DDD) principles, this platform provides enterprise-grade features with exceptional code quality and maintainability.
+
+### Key Highlights
+
+- **Modern Architecture**: Clean Architecture with DDD patterns for scalability and maintainability
+- **TRUST 5 Quality**: Tested, Readable, Unified, Secured, and Trackable codebase
+- **Full-Stack**: Python/FastAPI backend with Next.js 14 frontend
+- **Production Ready**: Docker containerization, CI/CD pipelines, comprehensive testing
+- **Multi-Tenant**: Account-scoped data isolation with row-level security
+- **Real-Time**: WebSocket support for live updates and notifications
+
+---
+
+## Features
+
+### Core Modules
+
+| Module | Features | Status |
+|--------|----------|--------|
+| **Workflows** | Automation engine, triggers, actions, conditions | 🟢 Implemented |
+| **CRM** | Contact management, custom fields, tags, segments | 🟡 Partial |
+| **Pipelines** | Sales pipelines, deal tracking, kanban boards | ⚪ Planned |
+| **Campaigns** | Email, SMS, multi-channel campaigns | ⚪ Planned |
+| **Funnels** | Landing page builder, forms, analytics | ⚪ Planned |
+| **Calendars** | Booking system, appointment scheduling | ⚪ Planned |
+| **Memberships** | Courses, community, subscriptions | ⚪ Planned |
+| **Analytics** | Dashboards, reporting, insights | ⚪ Planned |
+| **Integrations** | Webhooks, API connectors, Zapier | ⚪ Planned |
+
+### Technical Features
+
+- **Authentication**: JWT-based auth with refresh tokens
+- **Rate Limiting**: Redis-backed rate limiting per account
+- **Audit Logging**: Comprehensive activity tracking
+- **API Documentation**: Auto-generated OpenAPI/Swagger docs
+- **Testing**: 85%+ coverage with unit, integration, and E2E tests
+- **Type Safety**: Full TypeScript frontend, Python type hints backend
+- **Real-Time Updates**: WebSocket for live data synchronization
+- **Background Jobs**: Celery for async task processing
+
+---
 
 ## Quick Start
 
+### Prerequisites
+
+- **Python**: 3.12 or higher
+- **Node.js**: 20.x or higher
+- **Docker**: Latest version (for containerized deployment)
+- **PostgreSQL**: 16 or higher
+- **Redis**: 7 or higher
+
+### Local Development Setup
+
+#### 1. Clone the Repository
+
 ```bash
-# Clone repository
 git clone https://github.com/your-org/gohighlevel-clone.git
 cd gohighlevel-clone
-
-# Install dependencies
-cd backend
-pip install -r requirements.txt
-
-# Run tests
-pytest tests/workflows/ -v --cov=src/workflows
-
-# Start development server
-uvicorn src.main:app --reload
 ```
 
-## Latest Feature: Workflow CRUD ✨
-
-**SPEC-WFL-001** (2026-02-05) - Complete workflow creation and management system with:
-
-- **Create Workflows:** POST /api/v1/workflows with validation and audit logging
-- **Rate Limiting:** 100 requests/hour per account (Redis-based)
-- **Multi-Tenancy:** Account-scoped workflows with row-level security
-- **Test Coverage:** 108 tests (47 characterization + 11 acceptance + 50 existing)
-- **Quality:** TRUST 5 PASS (Tested, Readable, Unified, Secured, Trackable)
-
-```python
-# Example: Create a workflow
-import requests
-
-response = requests.post(
-    "https://api.example.com/api/v1/workflows",
-    headers={"Authorization": f"Bearer {clerk_token}"},
-    json={
-        "name": "Welcome Email Sequence",
-        "description": "Send welcome emails to new contacts",
-        "trigger_type": "contact_added"
-    }
-)
-
-workflow = response.json()
-print(f"Created workflow: {workflow['id']}")
-# Output: Created workflow: 550e8400-e29b-41d4-a716-446655440000
-```
-
-**Documentation:**
-- [API Reference](docs/api/workflows.md)
-- [Testing Guide](docs/development/testing.md)
-- [Implementation Report](.moai/specs/SPEC-WFL-001/DDD_IMPLEMENTATION_REPORT.md)
-
-## Estructura del Proyecto
-
-## Stack Tecnológico
-
-| Capa | Tecnología | Skill Moai-ADK |
-|------|------------|----------------|
-| Backend | FastAPI (Python 3.12) | moai-lib-fastapi |
-| Frontend | Next.js 14 + Shadcn | moai-lib-nextjs |
-| Base de Datos | PostgreSQL (Supabase) | moai-platform-supabase |
-| Auth | Clerk | moai-platform-clerk |
-| AI | OpenAI + Anthropic | moai-domain-ml |
-| Pagos | Stripe | moai-context7-integration |
-| SMS/Voz | Twilio | moai-context7-integration |
-| Email | SendGrid | moai-context7-integration |
-
-## Módulos y SPECs
-
-### Total: 105+ SPECs en formato EARS
-
-| Módulo | Archivo | SPECs | Prioridad | Estado |
-|--------|---------|-------|-----------|--------|
-| **Workflows** | automation.yaml | 12 | Crítica | 🟢 En Progreso |
-| CRM - Contactos | contacts.yaml | 8 | Crítica | ⚪ Planeado |
-| CRM - Pipelines | pipelines.yaml | 5 | Alta | ⚪ Planeado |
-| Marketing - Campañas | campaigns.yaml | 10 | Crítica | ⚪ Planeado |
-| Marketing - IA | ai-conversations.yaml | 7 | Alta | ⚪ Planeado |
-| Funnels - Builder | builder.yaml | 10 | Alta | ⚪ Planeado |
-| Funnels - Analytics | analytics.yaml | 8 | Alta | ⚪ Planeado |
-| Bookings | calendar.yaml | 12 | Alta | ⚪ Planeado |
-| Memberships | courses.yaml | 13 | Media | ⚪ Planeado |
-| White Label - Branding | branding.yaml | 8 | Alta | ⚪ Planeado |
-| White Label - Security | security.yaml | 11 | Crítica | ⚪ Planeado |
-| Integrations | external-apis.yaml | 11 | Alta | ⚪ Planeado |
-
-### Workflows Module Progress (SPEC-WFL-001)
-
-**Implemented:**
-- ✅ SPEC-WFL-001: Create Workflow (2026-02-05)
-  - Workflow creation API with validation
-  - Rate limiting (100/hour per account)
-  - Multi-tenant isolation
-  - Audit logging
-  - 108 tests (85% coverage)
-
-**In Progress:**
-- 🔄 SPEC-WFL-002: Configure Trigger
-- 🔄 SPEC-WFL-003: Add Action Step
-
-**Planned:**
-- ⚪ SPEC-WFL-005: Execute Workflow
-- ⚪ SPEC-WFL-012: Workflow Versioning
-
-## Fases de Desarrollo
-
-1. **Fase 1: Infraestructura Core**
-   - Seguridad y autenticación
-   - Integraciones externas base
-
-2. **Fase 2: CRM Foundation**
-   - Gestión de contactos
-   - Pipelines de ventas
-
-3. **Fase 3: Motor de Comunicación**
-   - Campañas multicanal
-   - Automatización de workflows
-
-4. **Fase 4: Herramientas de Conversión**
-   - Constructor de funnels
-   - Sistema de reservas
-
-5. **Fase 5: Monetización**
-   - Cursos y membresías
-   - Procesamiento de pagos
-
-6. **Fase 6: White Label**
-   - Personalización de marca
-   - Multi-tenancy
-
-## Comandos Moai-ADK
+#### 2. Backend Setup
 
 ```bash
-# Inicializar proyecto
-moai-adk init gohighlevel-clone --locale es
+# Navigate to backend directory
+cd backend
 
-# Planificar implementación de un módulo
-moai-adk plan --spec-dir specs/crm/
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Implementar módulo con TDD
-moai-adk run --module crm
+# Install dependencies
+pip install -e .
 
-# Ejecutar tests
-moai-adk test --coverage
+# Setup environment variables
+cp .env.example .env
+# Edit .env with your configuration
 
-# Desplegar
-moai-adk deploy --env production
+# Run database migrations
+alembic upgrade head
+
+# Start development server
+uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
 ```
+
+Backend API will be available at [http://localhost:8000](http://localhost:8000)
+
+#### 3. Frontend Setup
+
+```bash
+# Navigate to frontend directory (in a new terminal)
+cd frontend
+
+# Install dependencies
+npm install
+
+# Setup environment variables
+cp .env.example .env.local
+# Edit .env.local with your configuration
+
+# Start development server
+npm run dev
+```
+
+Frontend will be available at [http://localhost:3000](http://localhost:3000)
+
+#### 4. Docker Deployment (Recommended)
+
+```bash
+# Start all services (PostgreSQL, Redis, Backend, Frontend)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+### Verify Installation
+
+```bash
+# Check backend health
+curl http://localhost:8000/health
+
+# Access API documentation
+open http://localhost:8000/docs
+
+# Access frontend
+open http://localhost:3000
+```
+
+---
 
 ## Documentation
 
-- **[API Documentation](docs/api/workflows.md)** - Workflows API reference
-- **[Testing Guide](docs/development/testing.md)** - Testing patterns and best practices
+### User Documentation
+
+- **[Getting Started Guide](docs/getting-started.md)** - New user orientation
+- **[User Manual](docs/user-manual.md)** - Feature-by-feature guide
+- **[Admin Guide](docs/admin-guide.md)** - Administration and configuration
+- **[FAQ](docs/faq.md)** - Frequently asked questions
+
+### Developer Documentation
+
+- **[API Reference](docs/api/README.md)** - Complete API documentation
+  - [Workflows API](docs/api/workflows.md)
+  - [Contacts API](docs/api/contacts.md)
+  - [Campaigns API](docs/api/campaigns.md)
+- **[Architecture Guide](docs/architecture/README.md)** - System design and patterns
+  - [System Architecture](docs/architecture/system.md)
+  - [Database Schema](docs/architecture/database.md)
+  - [Data Flow](docs/architecture/data-flow.md)
+- **[Development Guide](docs/development/README.md)** - Development workflows
+  - [Backend Development](docs/development/backend.md)
+  - [Frontend Development](docs/development/frontend.md)
+  - [Testing Guide](docs/development/testing.md)
+  - [DDD Methodology](docs/development/ddd.md)
+- **[Deployment Guide](docs/deployment/README.md)** - Deployment instructions
+  - [Local Development](docs/deployment/local.md)
+  - [Docker Deployment](docs/deployment/docker.md)
+  - [Cloud Deployment](docs/deployment/cloud.md)
+
+### Project Documentation
+
 - **[CHANGELOG](CHANGELOG.md)** - Version history and changes
-- **[SPEC-WFL-001](.moai/specs/SPEC-WFL-001/spec.md)** - Workflow CRUD specification
-- **[DDD Report](.moai/specs/SPEC-WFL-001/DDD_IMPLEMENTATION_REPORT.md)** - Implementation details
+- **[Contributing Guide](CONTRIBUTING.md)** - Contribution guidelines
+- **[License](LICENSE)** - MIT License
 
-## Test Coverage & Quality
+---
 
-### Current Status: SPEC-WFL-001
+## Development
 
-**Test Statistics:**
-- **Total Tests:** 108 (+116% increase)
-  - Characterization: 47 tests (baseline behavior)
-  - Acceptance: 11 tests (SPEC requirements)
-  - Unit: 23+ tests (component logic)
-  - Integration: ~15 tests (component interaction)
-  - E2E: ~12 tests (full request cycle)
+### Technology Stack
 
-**Coverage Metrics:**
-- Estimated Coverage: 75-80%
-- Target Coverage: 85%
-- Quality Gates: All passed ✅
+#### Backend
 
-**Quality Metrics (TRUST 5):**
-- **Testable:** 85% - Comprehensive test coverage with characterization and acceptance tests
-- **Readable:** 95% - Clear naming conventions, extensive documentation
-- **Unified:** 90% - Consistent patterns across modules
-- **Secured:** 85% - Multi-tenancy, rate limiting, input validation
-- **Trackable:** 95% - Comprehensive audit logging
+- **Framework**: FastAPI 0.115+
+- **Language**: Python 3.12+
+- **Database**: PostgreSQL 16 with SQLAlchemy 2.0 async
+- **Cache**: Redis 7+
+- **Authentication**: JWT with python-jose
+- **Testing**: pytest, pytest-asyncio, pytest-cov
+- **Code Quality**: ruff, mypy, black
+- **API Docs**: OpenAPI 3.0 / Swagger
 
-### Running Tests
+#### Frontend
+
+- **Framework**: Next.js 14.2+ (App Router)
+- **Language**: TypeScript 5.4+
+- **UI Library**: React 19, Radix UI primitives
+- **Styling**: Tailwind CSS 3.4+
+- **State Management**: Zustand, TanStack Query
+- **Forms**: React Hook Form + Zod validation
+- **Charts**: Recharts
+- **Testing**: Vitest, Playwright
+
+#### Infrastructure
+
+- **Containerization**: Docker, Docker Compose
+- **CI/CD**: GitHub Actions
+- **Deployment**: Railway, Vercel
+- **Monitoring**: Application logging and metrics
+- **Database Migrations**: Alembic
+
+### Development Workflow
+
+#### SPEC-First DDD Methodology
+
+This project follows the MoAI-ADK SPEC-First development approach:
+
+1. **Plan Phase** - Create comprehensive specification in EARS format
+2. **Run Phase** - Implement using DDD: ANALYZE → PRESERVE → IMPROVE
+3. **Sync Phase** - Generate documentation and create pull request
 
 ```bash
-# All workflow tests
+# Plan a new feature
+/moai:1-plan "Implement contact management with custom fields"
+
+# Implement with DDD
+/moai:2-run SPEC-CNT-001
+
+# Document and sync
+/moai:3-sync SPEC-CNT-001
+```
+
+#### Quality Standards (TRUST 5)
+
+All code must meet TRUST 5 quality standards:
+
+- **Tested**: 85%+ test coverage with characterization tests
+- **Readable**: Clear naming, English comments, ruff formatting
+- **Unified**: Consistent patterns, single source of truth
+- **Secured**: OWASP compliance, input validation, rate limiting
+- **Trackable**: Semantic versioning, git history, audit logs
+
+#### Running Tests
+
+```bash
+# Backend tests
 cd backend
-pytest tests/workflows/ -v --cov=src/workflows
+pytest tests/ -v --cov=src --cov-report=html
 
-# Characterization tests (baseline behavior)
-pytest tests/workflows/characterization/ -v
+# Frontend tests
+cd frontend
+npm run test
+npm run test:e2e
 
-# Acceptance tests (SPEC requirements)
-pytest tests/workflows/acceptance/ -v
+# Type checking
+npm run type-check
 
-# With coverage report
-pytest tests/workflows/ --cov=src/workflows --cov-report=html
-open htmlcov/index.html
+# Linting
+npm run lint
 ```
 
-## Development Workflow
-
-### SPEC-First DDD Methodology
-
-1. **Plan Phase** (`/moai:1-plan`)
-   - Create comprehensive SPEC document in EARS format
-   - Define acceptance criteria and technical approach
-   - Output: `.moai/specs/SPEC-XXX/spec.md`
-
-2. **Run Phase** (`/moai:2-run SPEC-XXX`)
-   - Execute DDD cycle: ANALYZE → PRESERVE → IMPROVE → VALIDATE
-   - Create characterization tests before refactoring
-   - Maintain 100% behavior preservation
-   - Achieve 85%+ test coverage
-
-3. **Sync Phase** (`/moai:3-sync SPEC-XXX`)
-   - Generate API documentation
-   - Update README and CHANGELOG
-   - Create pull request with comprehensive documentation
-
-### Example: SPEC-WFL-001 Workflow
+#### Code Quality Checks
 
 ```bash
-# 1. Plan: Create specification
-/moai:1-plan "Create workflow CRUD with multi-tenancy"
+# Backend - Ruff linting
+cd backend
+ruff check src/
+ruff format src/
 
-# 2. Run: Implement with DDD
-/moai:2-run SPEC-WFL-001
-# Output: 108 tests, Clean Architecture, TRUST 5 PASS
+# Backend - Type checking
+mypy src/
 
-# 3. Sync: Document and deploy
-/moai:3-sync SPEC-WFL-001
-# Output: API docs, testing guide, CHANGELOG, PR description
+# Frontend - ESLint
+cd frontend
+npm run lint
+
+# Frontend - Prettier
+npm run format
 ```
 
-## Architecture
+---
 
-### Clean Architecture Layers
+## Deployment
+
+### Docker Deployment
+
+```bash
+# Build and start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f backend
+
+# Stop services
+docker-compose down
+
+# Remove volumes (WARNING: deletes data)
+docker-compose down -v
+```
+
+### Cloud Deployment
+
+#### Railway (Backend)
+
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Login and link project
+railway login
+railway link
+
+# Deploy backend
+railway up
+```
+
+#### Vercel (Frontend)
+
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Deploy frontend
+cd frontend
+vercel
+```
+
+### Environment Variables
+
+See [deployment environment configuration](docs/deployment/environment.md) for complete environment variable reference.
+
+---
+
+## Project Structure
 
 ```
-┌─────────────────────────────────────┐
-│   Presentation Layer (FastAPI)      │  ← Routes, Dependencies, Middleware
-├─────────────────────────────────────┤
-│   Application Layer (Use Cases)     │  ← Business logic orchestration
-├─────────────────────────────────────┤
-│   Domain Layer (Entities)           │  ← Core business rules
-├─────────────────────────────────────┤
-│   Infrastructure Layer (Repositories)│  ← Database, external services
-└─────────────────────────────────────┘
+gohighlevel-clone/
+├── backend/                 # FastAPI backend
+│   ├── src/
+│   │   ├── core/           # Core configuration and utilities
+│   │   ├── workflows/      # Workflow automation module
+│   │   ├── crm/            # CRM module
+│   │   └── main.py         # FastAPI application entry
+│   ├── tests/              # Test suite
+│   ├── alembic/            # Database migrations
+│   ├── Dockerfile
+│   └── pyproject.toml
+├── frontend/               # Next.js frontend
+│   ├── src/
+│   │   ├── app/           # Next.js App Router pages
+│   │   ├── components/    # React components
+│   │   ├── lib/           # Utilities and configurations
+│   │   └── styles/        # Global styles
+│   ├── public/            # Static assets
+│   ├── Dockerfile
+│   └── package.json
+├── docs/                  # Documentation
+├── .github/               # GitHub Actions workflows
+├── specs/                 # MoAI-ADK specifications
+├── docker-compose.yml
+├── README.md
+└── CHANGELOG.md
 ```
 
-**Technology Stack:**
-- **Backend:** FastAPI (Python 3.12), SQLAlchemy 2.0 async
-- **Frontend:** Next.js 14 + Shadcn UI
-- **Database:** PostgreSQL (Supabase)
-- **Authentication:** Clerk
-- **Rate Limiting:** Redis
-- **Testing:** pytest, pytest-asyncio, pytest-cov
+---
 
-## Requisitos TRUST 5
+## Contributing
 
-- **T**estable: Cobertura mínima 80% (actual: 85%)
-- **R**eadable: Código documentado y limpio (actual: 95%)
-- **U**nified: Fuente única de verdad (actual: 90%)
-- **S**ecured: Cumplimiento OWASP (actual: 85%)
-- **T**rackable: Versionado semántico (actual: 95%)
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Contribution Process
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes following TRUST 5 standards
+4. Write/update tests (85%+ coverage required)
+5. Ensure all tests pass and code is formatted
+6. Commit with conventional commits (`feat: add amazing feature`)
+7. Push to your fork and submit a pull request
+
+### Development Guidelines
+
+- Follow the [Code of Conduct](docs/code-of-conduct.md)
+- Write clear, descriptive commit messages
+- Update documentation for any API changes
+- Add tests for new functionality
+- Ensure all existing tests pass
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Support
+
+- **Documentation**: [docs/](docs/)
+- **Issues**: [GitHub Issues](https://github.com/your-org/gohighlevel-clone/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-org/gohighlevel-clone/discussions)
+- **Email**: support@gohighlevel-clone.com
+
+---
+
+## Roadmap
+
+### Current Release: v0.1.0 (Alpha)
+
+- ✅ Workflow automation engine
+- ✅ Multi-tenant architecture
+- ✅ Rate limiting and security
+- 🔄 Contact management (in progress)
+- ⚪ Campaign management
+- ⚪ Pipeline management
+- ⚪ Funnel builder
+- ⚪ Booking system
+
+### Upcoming Features
+
+- **v0.2.0**: Email campaigns and automation
+- **v0.3.0**: Landing page builder
+- **v0.4.0**: Booking and calendar system
+- **v0.5.0**: Membership and courses
+- **v1.0.0**: Full feature parity with GoHighLevel
+
+---
+
+## Acknowledgments
+
+- Built with [MoAI-ADK](https://github.com/alfred/moai-adk) - SPEC-First AI Development Kit
+- UI components inspired by [shadcn/ui](https://ui.shadcn.com/)
+- Architecture patterns from [Domain-Driven Design](https://martinfowler.com/tags/domain%20driven%20design.html)
+
+---
+
+<div align="center">
+
+**Built with ❤️ by the GoHighLevel Clone Team**
+
+[GoHighLevel Clone](https://github.com/your-org/gohighlevel-clone) • [Documentation](docs/) • [Support](mailto:support@gohighlevel-clone.com)
+
+</div>

@@ -43,6 +43,8 @@ from src.workflows.presentation.bulk_enrollment_routes import router as bulk_enr
 from src.workflows.presentation.goal_routes import router as goal_router
 from src.workflows.presentation.middleware import setup_middleware
 from src.workflows.presentation.template_routes import router as template_router
+from src.crm.presentation.routes import router as crm_router
+from src.api.health import router as health_router
 
 
 @asynccontextmanager
@@ -114,12 +116,8 @@ def create_app() -> FastAPI:
     app.include_router(goal_router)
     app.include_router(template_router)
     app.include_router(bulk_enrollment_router)
-
-    # Health check endpoint
-    @app.get("/health", tags=["health"])
-    async def health_check() -> dict[str, str]:
-        """Health check endpoint for monitoring."""
-        return {"status": "healthy", "version": settings.app_version}
+    app.include_router(crm_router)
+    app.include_router(health_router)
 
     @app.get("/", tags=["health"])
     async def root() -> dict[str, str]:
