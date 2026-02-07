@@ -92,13 +92,15 @@ export default function WorkflowDetailPage({
         </div>
 
         <div className="flex gap-2">
+          <Button variant="outline" size="sm" asChild>
+            <Link href={`/workflows/${id}/builder`}>
+              <Edit className="mr-2 h-4 w-4" />
+              Edit in Builder
+            </Link>
+          </Button>
           <Button variant="outline" size="sm">
             <Copy className="mr-2 h-4 w-4" />
             Duplicate
-          </Button>
-          <Button variant="outline" size="sm">
-            <Edit className="mr-2 h-4 w-4" />
-            Edit
           </Button>
           <Button
             variant={workflow.status === 'active' ? 'destructive' : 'default'}
