@@ -127,3 +127,193 @@ class WorkflowOperationError(WorkflowDomainError):
     """
 
     pass
+
+
+class ValidationError(WorkflowDomainError):
+    """Raised when data fails validation.
+
+    This exception is raised when input data does not meet
+    validation requirements for entities or value objects.
+    """
+
+    pass
+
+
+class InvalidStatusTransitionError(WorkflowDomainError):
+    """Raised when an invalid status transition is attempted.
+
+    Generic status transition error for any entity with status tracking.
+    """
+
+    def __init__(self, current_status: str, target_status: str) -> None:
+        """Initialize with current and target status.
+
+        Args:
+            current_status: The current status.
+            target_status: The status attempted to transition to.
+        """
+        message = (
+            f"Cannot transition from '{current_status}' to '{target_status}'. "
+            f"This transition is not allowed."
+        )
+        super().__init__(message)
+        self.current_status = current_status
+        self.target_status = target_status
+
+
+# Goal Tracking Exceptions
+class GoalConfigNotFoundError(WorkflowDomainError):
+    """Raised when a goal configuration cannot be found."""
+
+    def __init__(self, goal_id: str) -> None:
+        """Initialize with goal config ID.
+
+        Args:
+            goal_id: The ID of the goal config that was not found.
+        """
+        message = f"Goal configuration with ID '{goal_id}' not found"
+        super().__init__(message)
+        self.goal_id = goal_id
+
+
+class GoalValidationError(WorkflowDomainError):
+    """Raised when goal configuration fails validation."""
+
+    pass
+
+
+# Template Exceptions
+class TemplateNotFoundError(WorkflowDomainError):
+    """Raised when a workflow template cannot be found."""
+
+    def __init__(self, template_id: str) -> None:
+        """Initialize with template ID.
+
+        Args:
+            template_id: The ID of the template that was not found.
+        """
+        message = f"Workflow template with ID '{template_id}' not found"
+        super().__init__(message)
+        self.template_id = template_id
+
+
+class TemplateValidationError(WorkflowDomainError):
+    """Raised when template configuration fails validation."""
+
+    def __init__(self, errors: list[str]) -> None:
+        """Initialize with validation errors.
+
+        Args:
+            errors: List of validation error messages.
+        """
+        message = f"Template validation failed: {'; '.join(errors)}"
+        super().__init__(message)
+        self.errors = errors
+
+
+class TemplateCloneError(WorkflowDomainError):
+    """Raised when template cloning fails."""
+
+    pass
+
+
+class TemplateLimitExceededError(WorkflowDomainError):
+    """Raised when account exceeds template limit."""
+
+    def __init__(self, current_count: int, max_allowed: int) -> None:
+        """Initialize with current count and limit.
+
+        Args:
+            current_count: Current number of templates.
+            max_allowed: Maximum allowed templates.
+        """
+        message = (
+            f"Template limit exceeded: {current_count} templates created, "
+            f"maximum allowed is {max_allowed}"
+        )
+        super().__init__(message)
+        self.current_count = current_count
+        self.max_allowed = max_allowed
+
+
+class MissingIntegrationError(WorkflowDomainError):
+    """Raised when required integration is not available."""
+
+    def __init__(self, integration: str) -> None:
+        """Initialize with integration name.
+
+        Args:
+            integration: The missing integration name.
+        """
+        message = (
+            f"Required integration '{integration}' is not available in this account"
+        )
+        super().__init__(message)
+        self.integration = integration
+
+
+# Bulk Enrollment Exceptions
+class BulkEnrollmentJobNotFoundError(WorkflowDomainError):
+    """Raised when a bulk enrollment job cannot be found."""
+
+    def __init__(self, job_id: str) -> None:
+        """Initialize with job ID.
+
+        Args:
+            job_id: The ID of the job that was not found.
+        """
+        message = f"Bulk enrollment job with ID '{job_id}' not found"
+        super().__init__(message)
+        self.job_id = job_id
+
+
+class BulkEnrollmentValidationError(WorkflowDomainError):
+    """Raised when bulk enrollment data fails validation."""
+
+    def __init__(self, errors: list[str]) -> None:
+        """Initialize with validation errors.
+
+        Args:
+            errors: List of validation error messages.
+        """
+        message = f"Bulk enrollment validation failed: {'; '.join(errors)}"
+        super().__init__(message)
+        self.errors = errors
+
+
+class ContactLimitExceededError(WorkflowDomainError):
+    """Raised when contact count exceeds maximum allowed."""
+
+    def __init__(self, current_count: int, max_allowed: int) -> None:
+        """Initialize with current count and limit.
+
+        Args:
+            current_count: Current number of contacts.
+            max_allowed: Maximum allowed contacts.
+        """
+        message = (
+            f"Contact limit exceeded: {current_count} contacts selected, "
+            f"maximum allowed is {max_allowed}"
+        )
+        super().__init__(message)
+        self.current_count = current_count
+        self.max_allowed = max_allowed
+
+
+class BulkEnrollmentJobNotCancellableError(WorkflowDomainError):
+    """Raised when attempting to cancel a job that cannot be cancelled."""
+
+    def __init__(self, job_id: str, status: str) -> None:
+        """Initialize with job ID and status.
+
+        Args:
+            job_id: The ID of the job.
+            status: The current status of the job.
+        """
+        message = (
+            f"Cannot cancel job '{job_id}' with status '{status}'. "
+            f"Job can only be cancelled while pending or processing."
+        )
+        super().__init__(message)
+        self.job_id = job_id
+        self.status = status

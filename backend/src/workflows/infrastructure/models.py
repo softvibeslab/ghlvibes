@@ -185,6 +185,13 @@ class WorkflowModel(Base):
         back_populates="workflows",
         lazy="selectin",
     )
+    trigger: Mapped["TriggerModel"] = relationship(
+        "TriggerModel",
+        back_populates="workflow",
+        lazy="selectin",
+        uselist=False,  # One-to-one relationship
+        cascade="all, delete-orphan",
+    )
     audit_logs: Mapped[list["WorkflowAuditLog"]] = relationship(
         "WorkflowAuditLog",
         back_populates="workflow",
@@ -195,13 +202,8 @@ class WorkflowModel(Base):
     # Table constraints
     __table_args__ = (
         # Unique constraint on name within account (excluding deleted)
-        UniqueConstraint(
-            "account_id",
-            "name",
-            name="uq_workflow_account_name",
-            postgresql_where="deleted_at IS NULL",
-        ),
-        # Name length constraint
+        # Note: For partial unique constraints, use CheckConstraint instead
+        # and enforce uniqueness at application level
         CheckConstraint(
             "length(name) >= 3 AND length(name) <= 100",
             name="ck_workflow_name_length",
@@ -210,12 +212,6 @@ class WorkflowModel(Base):
         Index("ix_workflow_account_status", "account_id", "status"),
         Index("ix_workflow_created_at", "created_at"),
         Index("ix_workflow_trigger_type", "trigger_type"),
-        # Partial index for active workflows
-        Index(
-            "ix_workflow_active",
-            "account_id",
-            postgresql_where="status = 'active' AND deleted_at IS NULL",
-        ),
     )
 
     def __repr__(self) -> str:
