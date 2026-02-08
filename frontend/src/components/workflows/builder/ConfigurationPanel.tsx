@@ -144,6 +144,9 @@ export function ConfigurationPanel() {
       updateNode(selectedNodeId, {
         data: {
           ...selectedNode?.data,
+          label: selectedNode?.data?.label || '',
+          icon: selectedNode?.data?.icon || '',
+          status: selectedNode?.data?.status || 'pending',
           config: data,
         },
       });
