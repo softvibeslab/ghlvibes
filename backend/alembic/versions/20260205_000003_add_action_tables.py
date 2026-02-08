@@ -5,17 +5,19 @@ Revises: 20260126_000002
 Create Date: 2026-02-05
 
 """
-from typing import Sequence, Union
 
-from alembic import op
+from collections.abc import Sequence
+
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
+
 
 # revision identifiers, used by Alembic.
 revision: str = "20260205_000003"
-down_revision: Union[str, None] = "20260126_000002"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = "20260126_000002"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -104,13 +106,9 @@ def upgrade() -> None:
 
     # Create indexes for workflow_actions
     op.create_index("ix_action_workflow_id", "workflow_actions", ["workflow_id"])
-    op.create_index(
-        "ix_action_workflow_position", "workflow_actions", ["workflow_id", "position"]
-    )
+    op.create_index("ix_action_workflow_position", "workflow_actions", ["workflow_id", "position"])
     op.create_index("ix_action_type", "workflow_actions", ["action_type"])
-    op.create_index(
-        "ix_action_enabled", "workflow_actions", ["workflow_id", "is_enabled"]
-    )
+    op.create_index("ix_action_enabled", "workflow_actions", ["workflow_id", "is_enabled"])
     op.create_index("ix_action_previous", "workflow_actions", ["previous_action_id"])
     op.create_index("ix_action_next", "workflow_actions", ["next_action_id"])
 
@@ -170,12 +168,8 @@ def upgrade() -> None:
     op.create_index(
         "ix_action_executions_workflow", "workflow_action_executions", ["workflow_execution_id"]
     )
-    op.create_index(
-        "ix_action_executions_contact", "workflow_action_executions", ["contact_id"]
-    )
-    op.create_index(
-        "ix_action_executions_status", "workflow_action_executions", ["status"]
-    )
+    op.create_index("ix_action_executions_contact", "workflow_action_executions", ["contact_id"])
+    op.create_index("ix_action_executions_status", "workflow_action_executions", ["status"])
     op.create_index(
         "ix_action_executions_action_status",
         "workflow_action_executions",

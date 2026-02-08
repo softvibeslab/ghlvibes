@@ -7,17 +7,19 @@ Create Date: 2026-02-06
 This migration adds tables for wait step execution tracking
 and event listener registration in workflow automation.
 """
-from typing import Sequence, Union
 
-from alembic import op
+from collections.abc import Sequence
+
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
+
 
 # revision identifiers, used by Alembic.
 revision: str = "20260206_add_wait_step_tables"
-down_revision: Union[str, None] = None
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = None
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -112,18 +114,33 @@ def upgrade() -> None:
         sa.Column("status", wait_execution_status_enum, nullable=False, server_default="waiting"),
         sa.Column("resumed_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column("resumed_by", sa.String(50), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
-        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
+        sa.Column(
+            "created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
+        ),
+        sa.Column(
+            "updated_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
+        ),
     )
 
     # Create indexes for workflow_wait_executions
-    op.create_index("ix_wait_executions_scheduled", "workflow_wait_executions", ["scheduled_at"],
-                    postgresql_where=sa.text("status = 'scheduled'"))
-    op.create_index("ix_wait_executions_event", "workflow_wait_executions",
-                    ["event_type", "event_correlation_id"],
-                    postgresql_where=sa.text("status = 'waiting'"))
-    op.create_index("uq_wait_execution_step", "workflow_wait_executions",
-                    ["workflow_execution_id", "step_id"], unique=True)
+    op.create_index(
+        "ix_wait_executions_scheduled",
+        "workflow_wait_executions",
+        ["scheduled_at"],
+        postgresql_where=sa.text("status = 'scheduled'"),
+    )
+    op.create_index(
+        "ix_wait_executions_event",
+        "workflow_wait_executions",
+        ["event_type", "event_correlation_id"],
+        postgresql_where=sa.text("status = 'waiting'"),
+    )
+    op.create_index(
+        "uq_wait_execution_step",
+        "workflow_wait_executions",
+        ["workflow_execution_id", "step_id"],
+        unique=True,
+    )
 
     # Create workflow_event_listeners table
     op.create_table(
@@ -158,17 +175,30 @@ def upgrade() -> None:
         sa.Column("status", sa.String(50), nullable=False, server_default="active"),
         sa.Column("matched_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column("matched_event_id", postgresql.UUID(as_uuid=True), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
+        sa.Column(
+            "created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
+        ),
     )
 
     # Create indexes for workflow_event_listeners
-    op.create_index("ix_event_listeners_lookup", "workflow_event_listeners",
-                    ["event_type", "contact_id"],
-                    postgresql_where=sa.text("status = 'active'"))
-    op.create_index("ix_event_listeners_expires", "workflow_event_listeners", ["expires_at"],
-                    postgresql_where=sa.text("status = 'active'"))
-    op.create_index("uq_event_listener", "workflow_event_listeners",
-                    ["wait_execution_id", "event_type"], unique=True)
+    op.create_index(
+        "ix_event_listeners_lookup",
+        "workflow_event_listeners",
+        ["event_type", "contact_id"],
+        postgresql_where=sa.text("status = 'active'"),
+    )
+    op.create_index(
+        "ix_event_listeners_expires",
+        "workflow_event_listeners",
+        ["expires_at"],
+        postgresql_where=sa.text("status = 'active'"),
+    )
+    op.create_index(
+        "uq_event_listener",
+        "workflow_event_listeners",
+        ["wait_execution_id", "event_type"],
+        unique=True,
+    )
 
 
 def downgrade() -> None:

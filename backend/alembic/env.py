@@ -7,15 +7,13 @@ loads database settings from environment variables.
 import asyncio
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from alembic import context
-
 from src.core.config import settings
 from src.core.database import Base
-
 
 # Import all models to ensure they are registered with Base.metadata
 # This is necessary for Alembic to detect model changes

@@ -12,26 +12,27 @@ This migration creates the initial database schema for workflows including:
 - Row Level Security policies
 """
 
-from typing import Sequence, Union
+from collections.abc import Sequence
 
 import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
-
 from alembic import op
+from sqlalchemy.dialects import postgresql
 
 
 # Revision identifiers
 revision: str = "001_initial"
-down_revision: Union[str, None] = None
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = None
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
     """Create initial schema."""
     # Create workflow_status enum type
     workflow_status = postgresql.ENUM(
-        "draft", "active", "paused",
+        "draft",
+        "active",
+        "paused",
         name="workflow_status",
         create_type=True,
     )

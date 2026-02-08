@@ -102,7 +102,7 @@ jobs:
     name: Build Docker Images
     runs-on: ubuntu-latest
     needs: [backend-test, frontend-test]
-    if: github.event_name == 'push'
+    if: always() && github.event_name == 'push'
     permissions:
       contents: read
       packages: write
@@ -168,7 +168,7 @@ jobs:
     name: Deploy Backend to Railway
     runs-on: ubuntu-latest
     needs: [build-images]
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    if: always() && github.ref == 'refs/heads/master' && github.event_name == 'push'
     environment:
       name: production
       url: ${{ steps.deploy.outputs.url }}
@@ -196,7 +196,7 @@ jobs:
     name: Deploy Frontend to Vercel
     runs-on: ubuntu-latest
     needs: [frontend-test]
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    if: always() && github.ref == 'refs/heads/master' && github.event_name == 'push'
     environment:
       name: production
       url: ${{ steps.deploy.outputs.url }}
@@ -219,7 +219,7 @@ jobs:
     name: Post-Deployment Integration Tests
     runs-on: ubuntu-latest
     needs: [deploy-backend, deploy-frontend]
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    if: always() && github.ref == 'refs/heads/master' && github.event_name == 'push'
 
     steps:
       - name: Checkout code
