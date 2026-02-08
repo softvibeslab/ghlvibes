@@ -27,7 +27,7 @@ import {
   type StepDefinition,
   type ConfigField,
 } from '@/lib/constants/step-types';
-import { X, Save, Test, Loader2 } from 'lucide-react';
+import { X, Save, Play, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function ConfigurationPanel() {
@@ -388,7 +388,7 @@ export function ConfigurationPanel() {
             {isTesting ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              <Test className="h-4 w-4" />
+              <Play className="h-4 w-4" />
             )}
           </Button>
           <Button

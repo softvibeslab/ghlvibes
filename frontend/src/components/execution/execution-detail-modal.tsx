@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { WorkflowExecution, ExecutionStep } from '@/lib/types/workflow';
 import { format } from 'date-fns';
-import { CheckCircle2, XCircle, Clock, AlertCircle, ChevronRight } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, AlertCircle, ChevronRight, RefreshCw } from 'lucide-react';
 import { clsx } from 'clsx';
 
 interface ExecutionDetailModalProps {

@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Plus, Search, Filter } from 'lucide-react';
+import { Plus, Search, Filter, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { WorkflowListTable } from '@/components/workflows/workflow-list-table';
@@ -121,10 +122,10 @@ export default function WorkflowsPage() {
           </p>
         </div>
         <Button asChild>
-          <a href="/workflows/create">
+          <Link href="/workflows/create">
             <Plus className="mr-2 h-4 w-4" />
             Create Workflow
-          </a>
+          </Link>
         </Button>
       </div>
 
@@ -156,7 +157,7 @@ export default function WorkflowsPage() {
       {/* Workflow List */}
       {workflows.length === 0 ? (
         <EmptyState
-          icon={Workflow}
+          icon={Filter}
           title="No workflows found"
           description="Get started by creating your first workflow automation"
           action={{

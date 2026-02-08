@@ -88,8 +88,6 @@ export function FunnelChart({ data, isLoading, className }: FunnelChartProps) {
                 dataKey="value"
                 isAnimationActive
                 lastShapeType="rectangle"
-                label={(item) => `${item.name}: ${item.value.toLocaleString()}`}
-                labelLine={{ stroke: '#ccc' }}
               >
                 {chartData.map((_, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

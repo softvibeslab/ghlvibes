@@ -96,9 +96,9 @@ export default function CRMDashboardPage() {
             },
             {
               title: 'Today&apos;s Tasks',
-              value: stats.tasks.today_count,
+              value: stats.tasks.due_today,
               icon: CheckCircle,
-              description: `${stats.tasks.overdue_count} overdue`,
+              description: `${stats.tasks.overdue_tasks} overdue`,
             },
           ]}
         />

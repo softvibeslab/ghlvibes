@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Trash2, Tag, User, Mail, FileExport } from 'lucide-react';
+import { Trash2, Tag, User, Mail, FileText } from 'lucide-react';
 
 interface BulkActionsBarProps {
   selectedCount: number;
@@ -69,7 +69,7 @@ export function BulkActionsBar({
 
       {onExport && (
         <Button variant="outline" size="sm" onClick={onExport}>
-          <FileExport className="mr-2 h-4 w-4" />
+          <FileText className="mr-2 h-4 w-4" />
           Export
         </Button>
       )}

@@ -12,7 +12,7 @@ import * as Icons from 'lucide-react';
 // Icon mapping
 const IconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   UserPlus: Icons.UserPlus,
-  UserEdit: Icons.UserEdit,
+  UserEdit: Icons.UserPen,
   Tag: Icons.Tag,
   Cake: Icons.Cake,
   Heart: Icons.Heart,

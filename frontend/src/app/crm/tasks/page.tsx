@@ -19,7 +19,6 @@ import { format } from 'date-fns';
 export default function TasksPage() {
   const {
     tasks,
-    selectedTaskId,
     isLoading,
     page,
     pageSize,

@@ -9,7 +9,7 @@ import {
   Clock,
   User,
   GitBranch,
-  RotateCounterClockwise,
+  RotateCcw,
   Eye,
   GitCompare,
 } from 'lucide-react';
@@ -154,7 +154,7 @@ export function VersionHistory({
                               onClick={() => setRollbackVersion(version)}
                               aria-label={`Rollback to version ${version.version_number}`}
                             >
-                              <RotateCounterClockwise className="h-4 w-4" />
+                              <RotateCcw className="h-4 w-4" />
                             </Button>
                           )}
                         </div>

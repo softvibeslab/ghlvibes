@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { WorkflowStatus } from '@/lib/types/workflow';
-import { CheckCircle2, PauseCircle, Draft, Archive } from 'lucide-react';
+import { CheckCircle2, PauseCircle, FileEdit, Archive } from 'lucide-react';
 
 interface WorkflowStatusBadgeProps {
   status: WorkflowStatus;
@@ -16,7 +16,7 @@ export function WorkflowStatusBadge({ status }: WorkflowStatusBadgeProps) {
     draft: {
       label: 'Draft',
       variant: 'secondary' as const,
-      icon: Draft,
+      icon: FileEdit,
     },
     paused: {
       label: 'Paused',

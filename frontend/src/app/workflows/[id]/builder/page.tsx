@@ -7,7 +7,7 @@ import { getWorkflow } from '@/lib/api/workflows';
 import { useWorkflowStore } from '@/lib/stores/workflow-store';
 import { useCanvasStore } from '@/lib/stores/canvas-store';
 import { WorkflowBuilder } from '@/components/workflows/builder/WorkflowBuilder';
-import { WorkflowSkeleton } from '@/components/workflows/workflow-skeleton';
+import { WorkflowTableSkeleton } from '@/components/workflows/workflow-skeleton';
 
 export default function WorkflowBuilderPage() {
   const params = useParams();
@@ -41,7 +41,7 @@ export default function WorkflowBuilderPage() {
   }, [reset]);
 
   if (isLoading) {
-    return <WorkflowSkeleton />;
+    return <WorkflowTableSkeleton />;
   }
 
   if (error || !workflow) {

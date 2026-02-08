@@ -92,7 +92,7 @@ export function ContactModal({
 
             <TabsContent value="notes" className="mt-4">
               <NoteEditor
-                notes={contact.notes || []}
+                notes={[]}
                 onAdd={(content) => {
                   // TODO: Implement add note
                 }}

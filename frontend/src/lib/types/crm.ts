@@ -486,6 +486,7 @@ export interface CreateAttachmentDto {
 }
 
 export interface ActivityFilters {
+  search?: string;
   type?: ActivityType;
   related_entity_type?: 'contact' | 'company' | 'deal';
   related_entity_id?: string;

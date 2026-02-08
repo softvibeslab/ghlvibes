@@ -84,7 +84,7 @@ export function KeyboardNav({
     <div
       ref={containerRef}
       onKeyDown={handleKeyDown}
-      className={cn}
+      className={className}
       role="presentation"
     >
       {children}

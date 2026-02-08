@@ -23,7 +23,7 @@ import { ChevronDown, Search } from 'lucide-react';
 
 const IconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   UserPlus: Icons.UserPlus,
-  UserEdit: Icons.UserEdit,
+  UserEdit: Icons.UserPen,
   Tag: Icons.Tag,
   Cake: Icons.Cake,
   Heart: Icons.Heart,
@@ -115,7 +115,7 @@ export function BuilderSidebar() {
 
     const query = searchQuery.toLowerCase();
 
-    return groupedGroups
+    return groupedSteps
       .map((group) => ({
         ...group,
         steps: group.steps.filter(

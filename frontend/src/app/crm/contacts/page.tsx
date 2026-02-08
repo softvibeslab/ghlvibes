@@ -47,12 +47,6 @@ export default function ContactsPage() {
   const { data: contactsData, refetch } = useQuery({
     queryKey: ['contacts', page, pageSize, filters],
     queryFn: () => getContacts({ ...filters, page, pageSize }),
-    onSuccess: (data) => {
-      setContacts(data.items, data.total);
-    },
-    onError: (err) => {
-      setError(err.message);
-    },
   });
 
   // Update store when data changes
@@ -168,7 +162,7 @@ export default function ContactsPage() {
           <ContactListTable
             contacts={contacts}
             selectedIds={selectedContacts}
-            onSelectionChange={setSelectedContacts}
+            onSelectionChange={(ids) => setSelectedContacts(Array.from(ids))}
             onEdit={handleEditContact}
             onDelete={handleDeleteContact}
           />

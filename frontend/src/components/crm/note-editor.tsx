@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatRelativeTime } from '@/lib/utils';
-import { PushPin, MoreVertical, Edit, Trash2 } from 'lucide-react';
+import { Pin, MoreVertical, Edit, Trash2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -115,7 +116,7 @@ export function NoteEditor({
                         {formatRelativeTime(note.created_at)}
                       </span>
                       {note.is_pinned && (
-                        <PushPin className="h-3 w-3 text-primary" />
+                        <Pin className="h-3 w-3 text-primary" />
                       )}
                     </div>
 
@@ -128,7 +129,7 @@ export function NoteEditor({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => onTogglePin?.(note.id)}>
-                            <PushPin className="mr-2 h-4 w-4" />
+                            <Pin className="mr-2 h-4 w-4" />
                             {note.is_pinned ? 'Unpin' : 'Pin'}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleStartEdit(note)}>

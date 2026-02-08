@@ -13,6 +13,7 @@ import { CustomFieldsDisplay } from '@/components/crm/custom-fields-display';
 import { getCompany, getCompanyContacts, getCompanyDeals, getEntityActivities, getCustomFields } from '@/lib/api/crm';
 import { formatCurrency, formatNumber } from '@/lib/utils';
 import Link from 'next/link';
+import type { Contact, Deal } from '@/lib/types/crm';
 
 export default function CompanyDetailPage({
   params,
@@ -236,7 +237,7 @@ export default function CompanyDetailPage({
         <TabsContent value="contacts" className="space-y-4">
           {contacts && contacts.items.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2">
-              {contacts.items.map((contact) => (
+              {contacts.items.map((contact: Contact) => (
                 <Card key={contact.id}>
                   <CardContent className="p-4">
                     <div className="flex items-center gap-3">
@@ -268,7 +269,7 @@ export default function CompanyDetailPage({
         <TabsContent value="deals" className="space-y-4">
           {deals && deals.items.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2">
-              {deals.items.map((deal) => (
+              {deals.items.map((deal: Deal) => (
                 <Card key={deal.id}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
