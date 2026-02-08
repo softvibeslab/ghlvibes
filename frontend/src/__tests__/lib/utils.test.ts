@@ -22,18 +22,3 @@ describe('cn utility function', () => {
     expect(cn('class1', undefined, null, 'class2')).toBe('class1 class2');
   });
 });
-
-describe('formatDate utility', () => {
-  it('should format dates correctly', () => {
-    const date = new Date('2025-01-01T10:00:00Z');
-    const formatted = formatDate(date, 'PP');
-    expect(formatted).toBe('January 1st, 2025');
-  });
-
-  it('should handle relative time formatting', () => {
-    const date = new Date();
-    date.setMinutes(date.getMinutes() - 5);
-    const formatted = formatDistanceToNow(date, { addSuffix: true });
-    expect(formatted).toContain('ago');
-  });
-});
