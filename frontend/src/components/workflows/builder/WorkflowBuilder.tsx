@@ -13,6 +13,7 @@ import { useWorkflowStore } from '@/lib/stores/workflow-store';
 import { useCanvasStore } from '@/lib/stores/canvas-store';
 import { Save, RotateCcw, AlertCircle } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { cn } from '@/lib/utils';
 
 const AUTO_SAVE_INTERVAL = 30000; // 30 seconds
 

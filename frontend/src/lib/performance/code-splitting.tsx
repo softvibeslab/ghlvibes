@@ -1,35 +1,29 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { ComponentType } from 'react';
+import { ComponentType, useState, useEffect } from 'react';
 
 // Heavy components that should be code-split
+// Using lazy loading for better performance
 export const WorkflowBuilder = dynamic(
-  () => import('@/components/workflows/builder/WorkflowBuilder'),
+  () => import('@/components/workflows/builder/WorkflowBuilder').then(mod => ({ default: mod.WorkflowBuilder })),
   {
     loading: () => <div>Loading builder...</div>,
     ssr: false,
   }
 );
 
-export const AnalyticsDashboard = dynamic(
-  () => import('@/components/analytics/metrics-cards'),
+// Note: These components may need adjustment based on their actual export patterns
+export const MetricsCards = dynamic(
+  () => import('@/components/analytics/metrics-cards').then(mod => ({ default: mod.MetricsCards })),
   {
     loading: () => <div>Loading analytics...</div>,
     ssr: true,
   }
 );
 
-export const TemplateGallery = dynamic(
-  () => import('@/components/templates/template-gallery'),
-  {
-    loading: () => <div>Loading templates...</div>,
-    ssr: true,
-  }
-);
-
 export const ExecutionDetailModal = dynamic(
-  () => import('@/components/execution/execution-detail-modal'),
+  () => import('@/components/execution/execution-detail-modal').then(mod => ({ default: mod.ExecutionDetailModal })),
   {
     loading: () => <div>Loading details...</div>,
     ssr: false,
@@ -37,7 +31,7 @@ export const ExecutionDetailModal = dynamic(
 );
 
 export const BulkEnrollmentModal = dynamic(
-  () => import('@/components/bulk/bulk-enrollment-modal'),
+  () => import('@/components/bulk/bulk-enrollment-modal').then(mod => ({ default: mod.BulkEnrollmentModal })),
   {
     loading: () => <div>Opening bulk enrollment...</div>,
     ssr: false,
@@ -45,7 +39,7 @@ export const BulkEnrollmentModal = dynamic(
 );
 
 export const VersionComparisonModal = dynamic(
-  () => import('@/components/version/version-comparison-modal'),
+  () => import('@/components/version/version-comparison-modal').then(mod => ({ default: mod.VersionComparisonModal })),
   {
     loading: () => <div>Loading comparison...</div>,
     ssr: false,

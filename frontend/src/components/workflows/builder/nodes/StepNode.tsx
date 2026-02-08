@@ -59,8 +59,8 @@ interface StepNodeData {
   status: 'pending' | 'active' | 'completed' | 'error';
 }
 
-export const StepNode = memo(({ data, selected }: NodeProps<StepNodeData>) => {
-  const nodeData = data as StepNodeData;
+export const StepNode = memo(({ data, selected }: NodeProps) => {
+  const nodeData = data as unknown as StepNodeData;
   const IconComponent = IconMap[nodeData.icon] || Icons.Box;
 
   // Color coding by node type

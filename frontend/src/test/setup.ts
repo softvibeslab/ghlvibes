@@ -1,12 +1,10 @@
 import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { cleanup as cleanupHooks } from '@testing-library/react-hooks'
 
 // Cleanup after each test
 afterEach(() => {
   cleanup()
-  cleanupHooks()
 })
 
 // Mock window.matchMedia

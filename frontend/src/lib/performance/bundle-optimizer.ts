@@ -56,13 +56,14 @@ export function useWebVitals() {
 
     const trackWebVitals = async () => {
       try {
-        const { getCLS, getFID, getFCP, getLCP, getTTFB } = await import('web-vitals');
+        const { onCLS, onFCP, onLCP, onTTFB, onINP } = await import('web-vitals');
 
-        getCLS(console.log);
-        getFID(console.log);
-        getFCP(console.log);
-        getLCP(console.log);
-        getTTFB(console.log);
+        // Use the new API with on* functions
+        onCLS(console.log);
+        onFCP(console.log);
+        onLCP(console.log);
+        onTTFB(console.log);
+        onINP(console.log);
       } catch (error) {
         console.warn('Failed to load web-vitals:', error);
       }

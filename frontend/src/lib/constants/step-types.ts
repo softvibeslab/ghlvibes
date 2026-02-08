@@ -4,7 +4,7 @@ import type { TriggerType, ActionType } from '@/lib/types/workflow';
 
 export interface StepDefinition {
   type: TriggerType | ActionType;
-  category: 'trigger' | 'action' | 'condition' | 'wait';
+  category: 'trigger' | 'action' | 'condition' | 'wait' | 'logic';
   label: string;
   description: string;
   icon: string;
@@ -1166,8 +1166,10 @@ export function getActionDefinition(type: ActionType): StepDefinition | undefine
 }
 
 export function getAllStepsByCategory(category: string): StepDefinition[] {
+  const triggerCat = (TRIGGER_CATEGORIES as Record<string, { id: string } | undefined>)[category.toUpperCase()];
+  const actionCat = (ACTION_CATEGORIES as Record<string, { id: string } | undefined>)[category.toUpperCase()];
   return [
-    ...TRIGGER_DEFINITIONS.filter((t) => TRIGGER_CATEGORIES[category.toUpperCase()]?.id === category),
-    ...ACTION_DEFINITIONS.filter((a) => ACTION_CATEGORIES[category.toUpperCase()]?.id === category),
+    ...TRIGGER_DEFINITIONS.filter((t) => triggerCat?.id === category),
+    ...ACTION_DEFINITIONS.filter((a) => actionCat?.id === category),
   ];
 }

@@ -100,7 +100,7 @@ export const useDealStore = create<DealStore>()(
       setSelectedPipelineId: (pipelineId) =>
         set({
           selectedPipelineId: pipelineId,
-          filters: { ...get().filters, pipeline_id: pipelineId },
+          filters: { ...get().filters, pipeline_id: pipelineId || undefined },
         }),
 
       setLoadingPipelines: (isLoadingPipelines) => set({ isLoadingPipelines }),

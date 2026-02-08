@@ -21,6 +21,7 @@ import {
   MarkerType,
   ReactFlowProvider,
   Panel,
+  Position,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useCanvasStore } from '@/lib/stores/canvas-store';
@@ -63,8 +64,8 @@ function WorkflowCanvasInner({ workflowId }: WorkflowCanvasProps) {
         type: 'stepNode',
         position: node.position,
         data: node.data,
-        sourcePosition: 'bottom',
-        targetPosition: 'top',
+        sourcePosition: Position.Bottom,
+        targetPosition: Position.Top,
       })),
     [storeNodes]
   );
@@ -99,7 +100,7 @@ function WorkflowCanvasInner({ workflowId }: WorkflowCanvasProps) {
         id: node.id,
         type: node.data.type as any,
         position: node.position,
-        data: node.data,
+        data: node.data as any,
       }))
     );
   }, [nodes, setNodes]);
@@ -111,7 +112,7 @@ function WorkflowCanvasInner({ workflowId }: WorkflowCanvasProps) {
         source: edge.source,
         target: edge.target,
         type: edge.type as any,
-        label: edge.label,
+        label: edge.label as any,
       }))
     );
   }, [edges, setEdges]);
@@ -123,9 +124,9 @@ function WorkflowCanvasInner({ workflowId }: WorkflowCanvasProps) {
         id: `e-${connection.source}-${connection.target}`,
         source: connection.source!,
         target: connection.target!,
-        type: 'default',
+        type: 'default' as const,
       };
-      addStoreEdge(newEdge);
+      addStoreEdge(newEdge as any);
       setHasUnsavedChanges(true);
     },
     [addStoreEdge, setHasUnsavedChanges]

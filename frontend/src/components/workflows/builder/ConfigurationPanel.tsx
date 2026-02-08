@@ -123,15 +123,15 @@ export function ConfigurationPanel() {
     reset,
     setValue,
     watch,
-  } = useForm<FormData>({
+  } = useForm<any>({
     resolver: zodResolver(schema),
-    defaultValues: selectedNode?.data.config as FormData,
+    defaultValues: selectedNode?.data.config || {},
   });
 
   // Reset form when selected node changes
   useEffect(() => {
     if (selectedNode) {
-      reset(selectedNode.data.config as FormData);
+      reset(selectedNode.data.config || {});
     }
   }, [selectedNode, reset]);
 
@@ -185,7 +185,7 @@ export function ConfigurationPanel() {
               id={field.name}
               placeholder={field.placeholder}
               {...register(field.name)}
-              className={cn(error && 'border-red-500')}
+              className={cn(error ? 'border-red-500' : '')}
               rows={4}
             />
             {field.helpText && (
@@ -260,7 +260,7 @@ export function ConfigurationPanel() {
               type="number"
               placeholder={field.placeholder}
               {...register(field.name, { valueAsNumber: true })}
-              className={cn(error && 'border-red-500')}
+              className={cn(error ? 'border-red-500' : '')}
             />
             {field.helpText && (
               <p className="text-xs text-gray-500">{field.helpText}</p>
@@ -282,7 +282,7 @@ export function ConfigurationPanel() {
               id={field.name}
               type="date"
               {...register(field.name)}
-              className={cn(error && 'border-red-500')}
+              className={cn(error ? 'border-red-500' : '')}
             />
             {field.helpText && (
               <p className="text-xs text-gray-500">{field.helpText}</p>
@@ -304,7 +304,7 @@ export function ConfigurationPanel() {
               id={field.name}
               type="time"
               {...register(field.name)}
-              className={cn(error && 'border-red-500')}
+              className={cn(error ? 'border-red-500' : '')}
             />
             {field.helpText && (
               <p className="text-xs text-gray-500">{field.helpText}</p>
@@ -326,7 +326,7 @@ export function ConfigurationPanel() {
               id={field.name}
               type="datetime-local"
               {...register(field.name)}
-              className={cn(error && 'border-red-500')}
+              className={cn(error ? 'border-red-500' : '')}
             />
             {field.helpText && (
               <p className="text-xs text-gray-500">{field.helpText}</p>
@@ -349,7 +349,7 @@ export function ConfigurationPanel() {
               type={field.type}
               placeholder={field.placeholder}
               {...register(field.name)}
-              className={cn(error && 'border-red-500')}
+              className={cn(error ? 'border-red-500' : '')}
             />
             {field.helpText && (
               <p className="text-xs text-gray-500">{field.helpText}</p>
@@ -375,8 +375,8 @@ export function ConfigurationPanel() {
             {stepDefinition?.label || 'Configure Step'}
           </h2>
           <p className="text-sm text-gray-500">
-            {selectedNode?.data.type && (
-              <span className="capitalize">{selectedNode.data.type}</span>
+            {selectedNode?.type && (
+              <span className="capitalize">{selectedNode.type}</span>
             )}
           </p>
         </div>

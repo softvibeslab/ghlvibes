@@ -1,4 +1,15 @@
 // Workflow Type Definitions
+
+// ============= COMMON TYPES =============
+
+export interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
 export type WorkflowStatus = 'draft' | 'active' | 'paused' | 'archived';
 
 export type TriggerType =

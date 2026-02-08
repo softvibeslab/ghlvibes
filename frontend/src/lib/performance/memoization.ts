@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useMemo, useCallback, useRef, useEffect, useState } from 'react';
 
 // Custom hook for memoized expensive calculations
 export function useMemoized<T>(
@@ -70,7 +70,7 @@ export function withMemo<P extends object>(
 
 // Use previous value hook
 export function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
+  const ref = useRef<T | undefined>(undefined);
   useEffect(() => {
     ref.current = value;
   }, [value]);
@@ -79,7 +79,7 @@ export function usePrevious<T>(value: T): T | undefined {
 
 // Use deep comparison for useMemo
 export function useDeepMemo<T>(factory: () => T, deps: any[]): T {
-  const ref = useRef<{ deps: any[]; value: T }>();
+  const ref = useRef<{ deps: any[]; value: T } | undefined>(undefined);
 
   if (!ref.current || !deepEqual(ref.current.deps, deps)) {
     ref.current = { deps, value: factory() };
